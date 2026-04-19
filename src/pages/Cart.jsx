@@ -2,11 +2,48 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getCart, setCart } from "../utils/storage";
 import "../styles/cart.css";
-
+import { getOrders, setOrders } from "../utils/storage";
 const Cart = () => {
   const navigate = useNavigate();
   const [cart, setCartState] = useState([]);
+  const handleCheckout = () => {
+    if (cart.length === 0) return;
 
+    const newOrder = {
+      id: Date.now(),
+      items: cart,
+      total: total,
+      date: new Date().toLocaleString(),
+      status: "Order Received",
+    };
+    
+    let orders = getOrders();
+    orders.push(newOrder);
+    setOrders(orders);
+
+    window.dispatchEvent(new Event("ordersUpdated"));
+    
+    // 🔥 CLEAR CART
+    setCart([]);
+    setCartState([]);
+
+    
+    
+    // 🔥 FAKE STATUS UPDATE
+    setTimeout(() => updateOrderStatus(newOrder.id, "Out for Delivery"), 5000);
+    setTimeout(() => updateOrderStatus(newOrder.id, "Delivered"), 10000);
+
+    alert("Order Placed ✅");
+  };
+  const updateOrderStatus = (orderId, newStatus) => {
+    let orders = getOrders();
+
+    const updated = orders.map((order) =>
+      order.id === orderId ? { ...order, status: newStatus } : order,
+    );
+
+    setOrders(updated);
+  };
   // 🔥 FIX: always load correct user cart
   useEffect(() => {
     setCartState(getCart());
@@ -36,10 +73,7 @@ const Cart = () => {
     updateCart(updated);
   };
 
-  const total = cart.reduce(
-    (acc, item) => acc + item.price * item.qty,
-    0
-  );
+  const total = cart.reduce((acc, item) => acc + item.price * item.qty, 0);
 
   if (cart.length === 0) {
     return (
@@ -81,9 +115,7 @@ const Cart = () => {
               </button>
             </div>
 
-            <div className="item-total">
-              ₹{item.price * item.qty}
-            </div>
+            <div className="item-total">₹{item.price * item.qty}</div>
           </div>
         ))}
       </div>
@@ -106,7 +138,7 @@ const Cart = () => {
           <span>₹{total}</span>
         </div>
 
-        <button className="checkout-btn">
+        <button className="checkout-btn" onClick={handleCheckout}>
           Proceed to Checkout
         </button>
       </div>

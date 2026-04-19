@@ -1,29 +1,34 @@
 import { useEffect, useState } from "react";
-
+import { getOrders } from "../utils/storage";
 export default function Orders() {
   const [orders, setOrders] = useState([]);
 
   // LOAD ORDERS FROM LOCALSTORAGE
   useEffect(() => {
-    const savedOrders = JSON.parse(localStorage.getItem("orders")) || [];
-    setOrders(savedOrders);
+    const loadOrders = () => {
+      setOrders(getOrders());
+    };
+
+    loadOrders();
+
+    // 🔥 listen for updates
+    window.addEventListener("ordersUpdated", loadOrders);
+
+    return () => {
+      window.removeEventListener("ordersUpdated", loadOrders);
+    };
   }, []);
 
   return (
     <div className="orders-container">
-
       <h1>Your Orders</h1>
 
       {/* EMPTY STATE */}
       {orders.length === 0 ? (
-        <p style={{ color: "#aaa", marginTop: "20px" }}>
-          No orders yet
-        </p>
+        <p style={{ color: "#aaa", marginTop: "20px" }}>No orders yet</p>
       ) : (
-
         orders.map((order) => (
           <div className="order-card" key={order.id}>
-
             {/* HEADER */}
             <div className="order-header">
               <div>
@@ -31,7 +36,7 @@ export default function Orders() {
                 <p>{order.date}</p>
               </div>
 
-              <span className="status">Delivered</span>
+              <span className="status">{order.status}</span>
             </div>
 
             {/* ITEMS */}
@@ -49,15 +54,10 @@ export default function Orders() {
             </div>
 
             {/* FOOTER */}
-            <div className="order-footer">
-              Total: ₹{order.total}
-            </div>
-
+            <div className="order-footer">Total: ₹{order.total}</div>
           </div>
         ))
-
       )}
-
     </div>
   );
 }
