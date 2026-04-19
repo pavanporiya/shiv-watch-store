@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import productsData from "../data/products.json";
 import "../styles/shop.css";
 import "../styles/toast.css";
-
+import { getCart, setCart } from "../utils/storage";
 const Shop = () => {
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
@@ -27,13 +27,22 @@ const Shop = () => {
   };
 
   // ✅ ADD TO CART
+
   const addToCart = (product, img = null) => {
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    // 🔥 LOGIN CHECK
+    if (!user) {
+      alert("Please login first to add items ❌");
+      return;
+    }
+
+    let cart = getCart();
 
     const existingIndex = cart.findIndex((item) => item.id === product.id);
 
     if (existingIndex !== -1) {
-      cart[existingIndex].qty += 1;
+      cart[existingIndex].qty += 1; // ✅ consistent
     } else {
       cart.push({
         ...product,
@@ -41,15 +50,13 @@ const Shop = () => {
       });
     }
 
-    localStorage.setItem("cart", JSON.stringify(cart));
+    setCart(cart);
 
-    // ✅ SHOW TOAST
     setShowToast(true);
     setTimeout(() => setShowToast(false), 2000);
 
     if (img) animateToCart(img);
   };
-
   // ✅ ANIMATION
   const animateToCart = (img) => {
     const cartIcon = document.getElementById("cart-icon");
@@ -80,7 +87,7 @@ const Shop = () => {
   const filteredProducts = products
     .filter((p) => p.name.toLowerCase().includes(search.toLowerCase()))
     .filter((p) =>
-      selectedCategory === "All" ? true : p.category === selectedCategory
+      selectedCategory === "All" ? true : p.category === selectedCategory,
     )
     .filter((p) => p.price <= maxPrice)
     .sort((a, b) => {
@@ -93,7 +100,6 @@ const Shop = () => {
     <>
       {/* 🔥 MAIN SHOP */}
       <div className="shop-container">
-
         {/* SIDEBAR */}
         <div className="shop-sidebar">
           <h2>Filters</h2>
@@ -106,7 +112,9 @@ const Shop = () => {
               Category <span>⌄</span>
             </div>
 
-            <div className={`accordion-body ${openPanel === "category" ? "open" : ""}`}>
+            <div
+              className={`accordion-body ${openPanel === "category" ? "open" : ""}`}
+            >
               <div className="category-buttons">
                 {categories.map((cat) => (
                   <button
@@ -129,7 +137,9 @@ const Shop = () => {
               Price <span>⌄</span>
             </div>
 
-            <div className={`accordion-body ${openPanel === "price" ? "open" : ""}`}>
+            <div
+              className={`accordion-body ${openPanel === "price" ? "open" : ""}`}
+            >
               <div className="price-buttons">
                 {[1000, 5000, 10000, 25000, 50000].map((price) => (
                   <button
@@ -205,9 +215,15 @@ const Shop = () => {
 
         {/* QUICK VIEW MODAL */}
         {selectedProduct && (
-          <div className="modal-overlay" onClick={() => setSelectedProduct(null)}>
+          <div
+            className="modal-overlay"
+            onClick={() => setSelectedProduct(null)}
+          >
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-              <span className="close-btn" onClick={() => setSelectedProduct(null)}>
+              <span
+                className="close-btn"
+                onClick={() => setSelectedProduct(null)}
+              >
                 ×
               </span>
 
@@ -229,15 +245,10 @@ const Shop = () => {
             </div>
           </div>
         )}
-
       </div>
 
       {/* 🔥 FIXED TOAST (OUTSIDE EVERYTHING) */}
-      {showToast && (
-        <div className="toast">
-          Added to cart
-        </div>
-      )}
+      {showToast && <div className="toast">Added to cart</div>}
     </>
   );
 };

@@ -3,13 +3,12 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import products from "../data/products.json";
 import { getData, setData } from "../utils/storage";
-import { getWishlist, setWishlist } from "../utils/storage";
+import { getCart, setCart, getWishlist, setWishlist } from "../utils/storage";
 import Toast from "../components/Toast";
 
 export default function Product() {
-
   const { id } = useParams();
-  const product = products.find(p => p.id == id);
+  const product = products.find((p) => p.id == id);
 
   const [toast, setToast] = useState("");
   const [activeImage, setActiveImage] = useState(0);
@@ -21,24 +20,33 @@ export default function Product() {
 
   // 🛒 ADD TO CART
   const addToCart = () => {
-    let cart = getData("cart");
-    const existing = cart.find(item => item.id === product.id);
+    const user = JSON.parse(localStorage.getItem("user"));
 
-    if (existing) {
-      existing.quantity += 1;
-    } else {
-      cart.push({ ...product, quantity: 1 });
+    // 🔥 LOGIN CHECK
+    if (!user) {
+      setToast("Login required ❌");
+      return;
     }
 
-    setData("cart", cart);
-    setToast("Added to Cart");
+    let cart = getCart();
+
+    const existing = cart.find((item) => item.id === product.id);
+
+    if (existing) {
+      existing.qty += 1; // ✅ FIXED
+    } else {
+      cart.push({ ...product, qty: 1 });
+    }
+
+    setCart(cart);
+    setToast("Added to Cart ✅");
   };
 
   // ❤️ WISHLIST
   const addToWishlist = () => {
     let wishlist = getWishlist();
 
-    const exists = wishlist.find(item => item.id === product.id);
+    const exists = wishlist.find((item) => item.id === product.id);
     if (exists) {
       setToast("Already in Wishlist");
       return;
@@ -55,10 +63,8 @@ export default function Product() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
-
       {/* 🔥 IMAGE GALLERY */}
       <div>
-
         <div className="main-image">
           <img src={images[activeImage]} />
         </div>
@@ -73,12 +79,10 @@ export default function Product() {
             />
           ))}
         </div>
-
       </div>
 
       {/* 📄 PRODUCT INFO */}
       <div className="product-info">
-
         <h2>{product.name}</h2>
 
         <p className="price">₹{product.price}</p>
@@ -98,21 +102,22 @@ export default function Product() {
           <h3>Customer Reviews</h3>
 
           <div className="review">
-            <p><strong>Rahul</strong></p>
+            <p>
+              <strong>Rahul</strong>
+            </p>
             <p>⭐️⭐️⭐️⭐️⭐️ Amazing quality watch!</p>
           </div>
 
           <div className="review">
-            <p><strong>Amit</strong></p>
+            <p>
+              <strong>Amit</strong>
+            </p>
             <p>⭐️⭐️⭐️⭐️ Worth the price.</p>
           </div>
-
         </div>
-
       </div>
 
       {toast && <Toast message={toast} onClose={() => setToast("")} />}
-
     </motion.div>
   );
 }

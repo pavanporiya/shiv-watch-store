@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import Toast from "../components/Toast";
 
 export default function Auth() {
-
   const [mode, setMode] = useState("login"); // login | signup | forgot
   const [showPass, setShowPass] = useState(false);
 
@@ -16,64 +15,87 @@ export default function Auth() {
 
   // STORAGE
   const getUsers = () => JSON.parse(localStorage.getItem("users")) || [];
-  const setUsers = (users) => localStorage.setItem("users", JSON.stringify(users));
+  const setUsers = (users) =>
+    localStorage.setItem("users", JSON.stringify(users));
 
-  // LOGIN
+  // ================= LOGIN =================
   const handleLogin = () => {
     const users = getUsers();
 
-    const user = users.find(
-      (u) => u.email === email && u.password === password
-    );
-
-    if (!user) {
-      setToast({ message: "Wrong credentials", type: "error" });
+    // 🔥 EMPTY VALIDATION
+    if (!email || !password) {
+      setToast({ message: "Please fill all fields ⚠️", type: "error" });
       return;
     }
 
-    localStorage.setItem("user", JSON.stringify(user));
+    const existingUser = users.find((u) => u.email === email);
+
+    // 🔥 USER NOT FOUND
+    if (!existingUser) {
+      setToast({ message: "User does not exist ❌", type: "error" });
+      return;
+    }
+
+    // 🔥 WRONG PASSWORD
+    if (existingUser.password !== password) {
+      setToast({ message: "Wrong password ❌", type: "error" });
+      return;
+    }
+
+    // 🔥 SUCCESS
+    localStorage.setItem("user", JSON.stringify(existingUser));
     window.dispatchEvent(new Event("userChanged"));
 
-    setToast({ message: "Login successful", type: "success" });
+    setToast({ message: "Login successful ✅", type: "success" });
 
     setTimeout(() => {
       navigate("/");
     }, 800);
   };
 
-  // SIGNUP
+  // ================= SIGNUP =================
   const handleSignup = () => {
     const users = getUsers();
 
+    if (!email || !password) {
+      setToast({ message: "Please fill all fields ⚠️", type: "error" });
+      return;
+    }
+
     if (users.find((u) => u.email === email)) {
-      setToast({ message: "User already exists", type: "error" });
+      setToast({ message: "User already exists ❌", type: "error" });
       return;
     }
 
     users.push({ email, password });
     setUsers(users);
 
-    setToast({ message: "Account created!", type: "success" });
+    setToast({ message: "Account created ✅", type: "success" });
 
     setTimeout(() => {
       setMode("login");
     }, 800);
   };
 
-  // RESET PASSWORD
+  // ================= RESET =================
   const handleReset = () => {
     const users = getUsers();
     const index = users.findIndex((u) => u.email === email);
 
+    if (!email || !password) {
+      setToast({ message: "Please fill all fields ⚠️", type: "error" });
+      return;
+    }
+
     if (index === -1) {
-      setToast({ message: "Email not found", type: "error" });
+      setToast({ message: "Email not found ❌", type: "error" });
       return;
     }
 
     users[index].password = password;
     setUsers(users);
 
-    setToast({ message: "Password updated!", type: "success" });
+    setToast({ message: "Password updated ✅", type: "success" });
 
     setTimeout(() => {
       setMode("login");
@@ -82,9 +104,7 @@ export default function Auth() {
 
   return (
     <div className="auth-container">
-
       <div className="auth-box">
-
         {/* TOGGLE */}
         {mode !== "forgot" && (
           <div className="auth-toggle">
@@ -110,7 +130,6 @@ export default function Auth() {
         </h2>
 
         <div className="auth-grid">
-
           <input
             type="email"
             placeholder="Email"
@@ -133,17 +152,22 @@ export default function Auth() {
 
           {/* BUTTONS */}
           {mode === "login" && (
-            <button className="auth-btn" onClick={handleLogin}>Login</button>
+            <button className="auth-btn" onClick={handleLogin}>
+              Login
+            </button>
           )}
 
           {mode === "signup" && (
-            <button className="auth-btn" onClick={handleSignup}>Create Account</button>
+            <button className="auth-btn" onClick={handleSignup}>
+              Create Account
+            </button>
           )}
 
           {mode === "forgot" && (
-            <button className="auth-btn" onClick={handleReset}>Reset Password</button>
+            <button className="auth-btn" onClick={handleReset}>
+              Reset Password
+            </button>
           )}
-
         </div>
 
         {/* LINKS */}
@@ -158,7 +182,6 @@ export default function Auth() {
             Back to Login
           </p>
         )}
-
       </div>
 
       {/* TOAST */}
@@ -169,7 +192,6 @@ export default function Auth() {
           onClose={() => setToast(null)}
         />
       )}
-
     </div>
   );
 }

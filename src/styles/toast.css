@@ -33,10 +33,7 @@
              toastOut 0.2s ease forwards 2s;
 }
 
-.toast::before {
-  content: "✓";
-  color: #22c55e;
-}
+
 
 @keyframes toastIn {
   to {

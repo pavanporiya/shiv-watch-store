@@ -1,16 +1,28 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getUser, logout } from "../utils/storage";
 
 export default function Navbar() {
-  // ✅ Initialize once
-  const [user, setUser] = useState(() => getUser());
+  const [user, setUser] = useState(getUser());
   const navigate = useNavigate();
 
-  // ✅ Logout handler (proper state update)
+  // 🔥 FIX: Listen for login/logout changes
+  useEffect(() => {
+    const updateUser = () => {
+      setUser(getUser());
+    };
+
+    window.addEventListener("userChanged", updateUser);
+
+    return () => {
+      window.removeEventListener("userChanged", updateUser);
+    };
+  }, []);
+
   const handleLogout = () => {
     logout();
     setUser(null);
+    window.dispatchEvent(new Event("userChanged"));
     navigate("/");
   };
 
@@ -21,34 +33,19 @@ export default function Navbar() {
       </Link>
 
       <div className="nav-items">
-        <Link to="/" className="nav-link">
-          Home
-        </Link>
-
-        <Link to="/shop" className="nav-link">
-          Shop
-        </Link>
+        <Link to="/" className="nav-link">Home</Link>
+        <Link to="/shop" className="nav-link">Shop</Link>
 
         {user && (
           <>
-            <Link to="/cart" className="nav-link">
-              Cart
-            </Link>
-
-            <Link to="/wishlist" className="nav-link">
-              Wishlist
-            </Link>
-
-            <Link to="/orders" className="nav-link">
-              Orders
-            </Link>
+            <Link to="/cart" className="nav-link">Cart</Link>
+            
+            <Link to="/orders" className="nav-link">Orders</Link>
           </>
         )}
 
         {!user ? (
-          <Link to="/auth" className="nav-link">
-            Login
-          </Link>
+          <Link to="/auth" className="nav-link">Login</Link>
         ) : (
           <button className="logout-btn" onClick={handleLogout}>
             Logout
