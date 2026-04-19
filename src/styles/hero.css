@@ -1,0 +1,61 @@
+/* ===== HERO ===== */
+
+.hero {
+  position: relative;
+  height: 90vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  background-size: cover;
+  background-position: center;
+}
+
+/* Overlay */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* Content */
+.hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Heading */
+.hero h1 {
+  font-size: 64px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+/* Subtext */
+.hero p {
+  color: #aaa;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+/* Button */
+.hero button {
+  padding: 12px 22px;
+  border-radius: 999px;
+  border: none;
+
+  background: white;
+  color: black;
+
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.hero button:hover {
+  transform: scale(1.05);
+}

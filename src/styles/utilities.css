@@ -1,0 +1,62 @@
+/* ================= BASE ================= */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+
+  letter-spacing: -0.2px;
+  line-height: 1.5;
+}
+
+/* HEADINGS */
+h1, h2, h3 {
+  font-weight: 600;
+  letter-spacing: -0.5px;
+}
+
+/* HERO TITLE */
+.hero h1 {
+  font-size: 64px;
+  letter-spacing: -1px;
+}
+
+/* SUBTEXT */
+.hero p {
+  font-size: 18px;
+  color: #a1a1aa;
+}
+
+/* ================= SECTION ================= */
+.section {
+  padding: 100px 80px;
+  text-align: center;
+}
+
+.section h2 {
+  margin-bottom: 40px;
+}
+
+.section.dark {
+  background: #0f0f10;
+}
+
+/* AVAILABILITY */
+.availability {
+  text-align: center;
+  padding: 100px;
+  background: #111;
+}
+
+/* FOOTER */
+.footer {
+  padding: 30px;
+  text-align: center;
+  color: var(--subtext);
+  border-top: 1px solid var(--border);
+}
+
+/* IMAGES */
+img {
+  max-width: 100%;
+  display: block;
+}

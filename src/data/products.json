@@ -1,0 +1,137 @@
+[
+  {
+    "id": 1,
+    "name": "Titan Edge Classic",
+    "price": 5999,
+    "category": "Luxury",
+    "image": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTM2xRAjjDKu-3Ex4O9wiMi_NN07gmI6oHC6Ut6IaCFNG3bg9J64SqLrgmq7weijGpFu72YFZM2V-_rYq9lAO-ANe32QvVfE44bZgAUaavKM3MNzqtKGvIy7A",
+    "image2": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQm-jl_mSwP99TuYzFSCDxSIKlkB7YCamB--ju1puI9kFr0FPiRfFhToa5e0H9v68YdDfGYkAcqLydApIKhKRGbpRdnC4SgPf7DXMKL-z8HfDuSSdgAbGks",
+    "description": "Slim luxury watch"
+  },
+  {
+    "id": 2,
+    "name": "Fossil Chronograph",
+    "price": 7999,
+    "category": "Luxury",
+    "image": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcS4O0yX48TJSEa1r-f_Am7cGl_MSfuHd7ajH8TTMXzRK33_WpQi_JMQpmZwjHO3741HOfxjl3g3gG22aykl5o50vSQfIKnLnq5TlytEmqtq7nA-FXZrhGsq",
+    "image2": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcR7Qh5-6sjxvktXQoMIj3Bj7f0mVQhVHA3OZ9kPvsCS485ujOgHYfyEbPzTY9cgaGDpx6iBSJ_kNel1JnXIqgr8EcwI8leuPmQyaBX4eALlN9Xg6pbYklpB",
+    "description": "Premium chronograph"
+  },
+  {
+    "id": 3,
+    "name": "Casio G-Shock",
+    "price": 4999,
+    "category": "Sport",
+    "image": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcR_xClbbQqL7__FchUWmBVRJmR6wpdfLq5anZIHRh4cmSjilbRl_sD8K7UUaKYYFZdllYgGYK1180OVyFgFZaqPr1KpMqdO",
+    "image2": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQWo38Kym3-CFMlXhceYZKANst1VlkJIpXb0OJrHyF4D7NPeBt65vFC_XQy4A4O2-07G9DvizYiL5Cost5hF2eSXGjOj_yJvIxUP2cB0WCdwTl7WHhkxmdkuA",
+    "description": "Rugged sports watch"
+  },
+  {
+    "id": 4,
+    "name": "Luxury Gold Elite",
+    "price": 15999,
+    "category": "Luxury",
+    "image": "https://media.istockphoto.com/id/471712723/photo/watch.jpg?s=1024x1024&w=is&k=20&c=O0i8guEMpQGjjq2v94wNfq9qq0mwm6QLUg124w7NidI=",
+    "image2": "https://media.istockphoto.com/id/175913538/photo/watch.jpg?s=1024x1024&w=is&k=20&c=PMO_1EciO18g139WF7uUveaJf47O9M_KJM2og0NzbhE=",
+    "description": "Luxury gold watch"
+  },
+  {
+    "id": 5,
+    "name": "Minimal Black Dial",
+    "price": 2999,
+    "category": "Casual",
+    "image": "https://haroldelectricals.com/cdn/shop/files/WatchMA20072_1800x1800.webp?v=1774979619",
+    "image2": "https://haroldelectricals.com/cdn/shop/files/WatchMA20073_1800x1800.webp?v=1774979651",
+    "description": "Minimal clean watch"
+  }
+  ,
+{
+  "id": 6,
+  "name": "Silver Chrono Elite",
+  "price": 8499,
+  "category": "Luxury",
+  "image": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQGVBh2nOziRCTt6VbWSLWltgFigYhHIisimYFkX1sPVfJ5nY02mgbnmK8W4bzokpxh8DjZ1q3vhrGXjtzg0SdSvRVp08QJBgGTUCwT1I_Ke0t_7ZRoGlm9MA",
+  "description": "Elegant silver chronograph watch"
+},
+{
+  "id": 7,
+  "name": "Midnight Black Pro",
+  "price": 6999,
+  "category": "Luxury",
+  "image": "https://images.unsplash.com/photo-1508057198894-247b23fe5ade",
+  "image2": "https://images.unsplash.com/photo-1511379938547-c1f69419868d",
+  "description": "Premium black dial watch"
+},
+{
+  "id": 8,
+  "name": "Red Sport X",
+  "price": 3999,
+  "category": "Sport",
+  "image": "https://images.meesho.com/images/products/534684195/hqsea_512.avif?width=512",
+  "image2": "https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b",
+  "description": "High-performance sports watch"
+},
+{
+  "id": 9,
+  "name": "Digital Runner",
+  "price": 2499,
+  "category": "Sport",
+  "image": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTPqfi69bsS4w1XJZI-qD1zHPnjUQ3o1ducJ7iVuCS5ZVQYx4YeFAyTh7F7KZVqbZPY_wPOeO8Hw0GYuK2aYc47V773tK5vejsM71MIF9NbM4_Vdhbnsb1NBljC",
+  "image2": "https://images.unsplash.com/photo-1509042239860-f550ce710b93",
+  "description": "Digital sports watch"
+},
+{
+  "id": 10,
+  "name": "Classic Leather Brown",
+  "price": 3299,
+  "category": "Casual",
+  "image": "https://cdn1.ethoswatches.com/media/catalog/product/cache/6e5de5bc3d185d8179cdc7258143f41a/o/m/omega-speedmaster-329-92-43-51-10-001-large.jpg",
+  "image2": "https://images.unsplash.com/photo-1518546305927-5a555bb7020d",
+  "description": "Classic leather strap watch"
+},
+{
+  "id": 11,
+  "name": "Minimal White Dial",
+  "price": 2899,
+  "category": "Casual",
+  "image": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSoWK66sgCOu8fnH7axVBvW7ycBY0hI83wExsOtBW8gfOc-zcVx1pjpgMn9LYl18JcVDljgn2ca-CVWiWIqABSEHauRJUhnGSI2bzEdYGfg",
+  "image2": "https://images.unsplash.com/photo-1519744346363-d4b33b2f6e0d",
+  "description": "Minimal elegant design"
+},
+{
+  "id": 12,
+  "name": "Smart Fit Pro",
+  "price": 9999,
+  "category": "Smart",
+  "image": "https://m.media-amazon.com/images/I/41691xQPPAL._SY300_SX300_QL70_FMwebp_.jpg",
+  "image2": "https://images.unsplash.com/photo-1547996160-81dfa63595aa",
+  "description": "Smart fitness watch"
+},
+{
+  "id": 13,
+  "name": "Smart Active X",
+  "price": 8999,
+  "category": "Smart",
+  "image": "https://m.media-amazon.com/images/I/51ra6Ux2D7L._SL1124_.jpg",
+  "image2": "https://images.unsplash.com/photo-1524592094714-0f0654e20314",
+  "description": "Advanced smart watch"
+},
+{
+  "id": 14,
+  "name": "Gold Prestige",
+  "price": 17999,
+  "category": "Luxury",
+  "image": "https://images.unsplash.com/photo-1547996160-81dfa63595aa",
+  "image2": "https://images.unsplash.com/photo-1511499767150-a48a237f0083",
+  "description": "Luxury gold finish watch"
+},
+{
+  "id": 15,
+  "name": "Urban Steel",
+  "price": 5599,
+  "category": "Casual",
+  "image": "https://www.titan.co.in/dw/image/v2/BKDD_PRD/on/demandware.static/-/Sites-titan-master-catalog/default/dw5ddc0e28/images/Fastrack/Catalog/3273NM01_1.jpg?sw=600&sh=600",
+  "image2": "https://images.unsplash.com/photo-1508057198894-247b23fe5ade",
+  "description": "Modern steel design"
+}
+]

@@ -1,0 +1,29 @@
+/* ===== GLOBAL LAYOUT SYSTEM ===== */
+
+/* CONTAINER */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-lg);
+}
+
+/* SECTIONS */
+.section {
+  padding: var(--space-2xl) 0;
+}
+
+/* TEXT */
+p {
+  color: var(--text-secondary);
+}
+
+/* HEADINGS */
+h1, h2, h3 {
+  margin-bottom: var(--space-sm);
+}
+
+/* IMAGES */
+img {
+  max-width: 100%;
+  display: block;
+}

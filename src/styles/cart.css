@@ -1,0 +1,170 @@
+/* ===== WRAPPER ===== */
+
+.cart-wrapper {
+  display: flex;
+  gap: 30px;
+  padding: 40px;
+  background: #0b0b0b;
+  color: white;
+  min-height: 100vh;
+}
+
+/* ===== LEFT SECTION ===== */
+
+.cart-items-section {
+  flex: 2;
+}
+
+.cart-items-section h2 {
+  margin-bottom: 20px;
+}
+
+/* ITEM */
+
+.cart-item {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  background: #111;
+  padding: 16px;
+  border-radius: 14px;
+  border: 1px solid #1a1a1a;
+  margin-bottom: 16px;
+}
+
+.cart-item img {
+  width: 90px;
+  border-radius: 10px;
+}
+
+/* INFO */
+
+.cart-info {
+  flex: 1;
+}
+
+.cart-info h3 {
+  margin: 0;
+}
+
+.cart-info p {
+  color: #aaa;
+}
+
+/* QTY */
+
+.qty-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.qty-controls button {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: none;
+  background: #222;
+  color: white;
+  cursor: pointer;
+}
+
+.qty-controls button:hover {
+  background: #333;
+}
+
+/* REMOVE */
+
+.remove-btn {
+  margin-top: 8px;
+  background: none;
+  color: #ff4d4d;
+  border: none;
+  cursor: pointer;
+}
+
+/* ITEM TOTAL */
+
+.item-total {
+  font-weight: bold;
+}
+
+/* ===== SUMMARY ===== */
+
+.cart-summary {
+  flex: 1;
+  background: #111;
+  padding: 20px;
+  border-radius: 14px;
+  border: 1px solid #1a1a1a;
+  height: fit-content;
+  position: sticky;
+  top: 100px;
+}
+
+.summary-row,
+.summary-total {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.summary-total {
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+/* BUTTON */
+
+.checkout-btn {
+  width: 100%;
+  margin-top: 20px;
+  padding: 14px;
+  border-radius: 10px;
+  background: white;
+  color: black;
+  border: none;
+  cursor: pointer;
+}
+
+.checkout-btn:hover {
+  opacity: 0.9;
+}
+
+/* ===== EMPTY ===== */
+
+.cart-empty-container {
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: #0b0b0b;
+}
+
+.cart-empty-content h1 {
+  margin-bottom: 10px;
+}
+
+.shop-btn {
+  margin-top: 20px;
+  padding: 12px 20px;
+  border-radius: 10px;
+  background: white;
+  color: black;
+  border: none;
+  cursor: pointer;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 900px) {
+  .cart-wrapper {
+    flex-direction: column;
+  }
+
+  .cart-summary {
+    position: static;
+  }
+}

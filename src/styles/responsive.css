@@ -1,0 +1,95 @@
+/* ================= MOBILE RESPONSIVE ================= */
+
+@media (max-width: 1024px) {
+
+  .section {
+    padding: 80px 40px;
+  }
+
+  .grid {
+    padding: 20px;
+    gap: 20px;
+  }
+
+  .featured-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stats {
+    gap: 50px;
+  }
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+
+  /* NAVBAR */
+  .nav-container {
+    padding: 12px 20px;
+  }
+
+  .nav-items {
+    gap: 12px;
+    font-size: 12px;
+  }
+
+  /* HERO */
+  .hero h1 {
+    font-size: 40px;
+  }
+
+  .hero p {
+    font-size: 14px;
+  }
+
+  .hero-btn {
+    padding: 10px 20px;
+    font-size: 13px;
+  }
+
+  /* STATS STACK */
+  .stats {
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+  }
+
+  /* PRODUCT PAGE */
+  .product {
+    flex-direction: column;
+    padding: 40px 20px;
+  }
+
+  .product img {
+    width: 100%;
+  }
+
+  /* AUTH */
+  .auth-box {
+    width: 90%;
+    padding: 25px;
+  }
+
+  /* FOOTER */
+  .footer {
+    padding: 20px;
+    font-size: 12px;
+  }
+}
+
+/* SMALL DEVICES */
+@media (max-width: 480px) {
+
+  .hero h1 {
+    font-size: 32px;
+  }
+
+  .section {
+    padding: 60px 20px;
+  }
+
+  .clients {
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+}
