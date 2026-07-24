@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { getOrders } from "../utils/storage";
+
 export default function Orders() {
   const [orders, setOrders] = useState([]);
+  const navigate = useNavigate();
 
   // LOAD ORDERS FROM LOCALSTORAGE
   useEffect(() => {
@@ -25,7 +28,14 @@ export default function Orders() {
 
       {/* EMPTY STATE */}
       {orders.length === 0 ? (
-        <p style={{ color: "#aaa", marginTop: "20px" }}>No orders yet</p>
+        <div className="empty-state" style={{ marginTop: "40px" }}>
+          <div className="empty-icon">📦</div>
+          <h2>No orders yet</h2>
+          <p>You haven't placed any orders yet. Start exploring our watch collection.</p>
+          <button onClick={() => navigate("/shop")}>
+            Explore Watches
+          </button>
+        </div>
       ) : (
         orders.map((order) => (
           <div className="order-card" key={order.id}>
@@ -36,18 +46,18 @@ export default function Orders() {
                 <p>{order.date}</p>
               </div>
 
-              <span className="status">{order.status}</span>
+              <span className="status">{order.status || "Order Received"}</span>
             </div>
 
             {/* ITEMS */}
             <div className="order-items">
-              {order.items.map((item, i) => (
+              {order.items && order.items.map((item, i) => (
                 <div className="order-item" key={i}>
                   <img src={item.image} alt={item.name} />
 
                   <div>
                     <p>{item.name}</p>
-                    <span>Qty: {item.quantity}</span>
+                    <span>Qty: {item.qty || item.quantity || 1}</span>
                   </div>
                 </div>
               ))}

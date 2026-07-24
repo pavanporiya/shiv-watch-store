@@ -1,24 +1,34 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getData, setData } from "../utils/storage";
+import { addToCartHelper } from "../utils/storage";
+import Toast from "./Toast";
 
 export default function ProductCard({ product }) {
-
   const navigate = useNavigate();
+  const [isAdding, setIsAdding] = useState(false);
+  const [toast, setToast] = useState(null);
 
-  const addToCart = (e) => {
+  const handleAddToCart = (e) => {
     e.stopPropagation();
+    if (isAdding) return;
 
-    let cart = getData("cart");
-    const existing = cart.find((item) => item.id === product.id);
+    setIsAdding(true);
 
-    if (existing) {
-      existing.quantity += 1;
-    } else {
-      cart.push({ ...product, quantity: 1 });
-    }
+    setTimeout(() => {
+      const res = addToCartHelper(product, 1);
 
-    setData("cart", cart);
-    alert("Added to cart");
+      if (!res.success) {
+        if (res.reason === "LOGIN_REQUIRED") {
+          setToast({ message: "Please log in to add items ❌", type: "error" });
+        } else {
+          setToast({ message: res.message || "Failed to add ❌", type: "error" });
+        }
+      } else {
+        setToast({ message: "Added to Cart ✅", type: "success" });
+      }
+
+      setIsAdding(false);
+    }, 250);
   };
 
   return (
@@ -26,10 +36,10 @@ export default function ProductCard({ product }) {
       className="card"
       onClick={() => navigate(`/product/${product.id}`)}
     >
-
       {/* IMAGE WITH HOVER SWAP */}
       <img
         src={product.image}
+        alt={product.name}
         onMouseOver={(e) => {
           if (product.image2) e.currentTarget.src = product.image2;
         }}
@@ -41,10 +51,17 @@ export default function ProductCard({ product }) {
       <h3>{product.name}</h3>
       <p>₹{product.price}</p>
 
-      <button onClick={addToCart}>
-        Add to Cart
+      <button onClick={handleAddToCart} disabled={isAdding}>
+        {isAdding ? "Adding..." : "Add to Cart"}
       </button>
 
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
     </div>
   );
 }

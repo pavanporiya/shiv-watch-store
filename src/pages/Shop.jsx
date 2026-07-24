@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import productsData from "../data/products.json";
 import "../styles/shop.css";
 import "../styles/toast.css";
-import { getCart, setCart } from "../utils/storage";
+import { addToCartHelper } from "../utils/storage";
+import Toast from "../components/Toast";
+
 const Shop = () => {
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
-  const [showToast, setShowToast] = useState(false);
+  const [toast, setToast] = useState(null);
 
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [maxPrice, setMaxPrice] = useState(50000);
@@ -15,6 +17,7 @@ const Shop = () => {
   const [openPanel, setOpenPanel] = useState("category");
 
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [addingProductId, setAddingProductId] = useState(null);
 
   useEffect(() => {
     setProducts(productsData);
@@ -27,36 +30,28 @@ const Shop = () => {
   };
 
   // ✅ ADD TO CART
-
   const addToCart = (product, img = null) => {
-    const user = JSON.parse(localStorage.getItem("user"));
+    if (addingProductId === product.id) return;
+    setAddingProductId(product.id);
 
-    // 🔥 LOGIN CHECK
-    if (!user) {
-      alert("Please login first to add items ❌");
-      return;
-    }
+    setTimeout(() => {
+      const res = addToCartHelper(product, 1);
 
-    let cart = getCart();
+      if (!res.success) {
+        if (res.reason === "LOGIN_REQUIRED") {
+          setToast({ message: "Please log in to add items to cart ❌", type: "error" });
+        } else {
+          setToast({ message: res.message || "Failed to add item ❌", type: "error" });
+        }
+      } else {
+        setToast({ message: "Added to Cart ✅", type: "success" });
+        if (img) animateToCart(img);
+      }
 
-    const existingIndex = cart.findIndex((item) => item.id === product.id);
-
-    if (existingIndex !== -1) {
-      cart[existingIndex].qty += 1; // ✅ consistent
-    } else {
-      cart.push({
-        ...product,
-        qty: 1,
-      });
-    }
-
-    setCart(cart);
-
-    setShowToast(true);
-    setTimeout(() => setShowToast(false), 2000);
-
-    if (img) animateToCart(img);
+      setAddingProductId(null);
+    }, 250);
   };
+
   // ✅ ANIMATION
   const animateToCart = (img) => {
     const cartIcon = document.getElementById("cart-icon");
@@ -176,41 +171,53 @@ const Shop = () => {
             </select>
           </div>
 
-          <div className="shop-grid">
-            {filteredProducts.map((product) => (
-              <div key={product.id} className="product-card">
-                <div className="image-wrapper">
-                  <img src={product.image} alt={product.name} />
-                </div>
+          {filteredProducts.length === 0 ? (
+            <div className="empty-state" style={{ padding: "40px 0" }}>
+              <div className="empty-icon">⌚</div>
+              <h2>No watches found</h2>
+              <p>Try adjusting your search or filter criteria.</p>
+            </div>
+          ) : (
+            <div className="shop-grid">
+              {filteredProducts.map((product) => {
+                const isAdding = addingProductId === product.id;
+                return (
+                  <div key={product.id} className="product-card">
+                    <div className="image-wrapper">
+                      <img src={product.image} alt={product.name} />
+                    </div>
 
-                <div className="product-name">{product.name}</div>
-                <div className="product-category">{product.category}</div>
-                <div className="product-price">₹{product.price}</div>
+                    <div className="product-name">{product.name}</div>
+                    <div className="product-category">{product.category}</div>
+                    <div className="product-price">₹{product.price}</div>
 
-                <div className="card-actions">
-                  <button
-                    className="product-btn"
-                    onClick={(e) => {
-                      const img = e.currentTarget
-                        .closest(".product-card")
-                        .querySelector("img");
+                    <div className="card-actions">
+                      <button
+                        className="product-btn"
+                        disabled={isAdding}
+                        onClick={(e) => {
+                          const img = e.currentTarget
+                            .closest(".product-card")
+                            .querySelector("img");
 
-                      addToCart(product, img);
-                    }}
-                  >
-                    Add to Cart
-                  </button>
+                          addToCart(product, img);
+                        }}
+                      >
+                        {isAdding ? "Adding..." : "Add to Cart"}
+                      </button>
 
-                  <button
-                    className="quick-view-btn"
-                    onClick={() => setSelectedProduct(product)}
-                  >
-                    Quick View
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
+                      <button
+                        className="quick-view-btn"
+                        onClick={() => setSelectedProduct(product)}
+                      >
+                        Quick View
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
 
         {/* QUICK VIEW MODAL */}
@@ -228,7 +235,7 @@ const Shop = () => {
               </span>
 
               <div className="modal-body">
-                <img src={selectedProduct.image} alt="" />
+                <img src={selectedProduct.image} alt={selectedProduct.name} />
 
                 <div className="modal-info">
                   <h2>{selectedProduct.name}</h2>
@@ -236,9 +243,10 @@ const Shop = () => {
 
                   <button
                     className="product-btn"
+                    disabled={addingProductId === selectedProduct.id}
                     onClick={() => addToCart(selectedProduct)}
                   >
-                    Add to Cart
+                    {addingProductId === selectedProduct.id ? "Adding..." : "Add to Cart"}
                   </button>
                 </div>
               </div>
@@ -247,8 +255,14 @@ const Shop = () => {
         )}
       </div>
 
-      {/* 🔥 FIXED TOAST (OUTSIDE EVERYTHING) */}
-      {showToast && <div className="toast">Added to cart</div>}
+      {/* TOAST */}
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
     </>
   );
 };

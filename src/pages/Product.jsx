@@ -1,60 +1,70 @@
-import { useParams } from "react-router-dom";
+import { useParams } from "react";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import products from "../data/products.json";
-import { getData, setData } from "../utils/storage";
-import { getCart, setCart, getWishlist, setWishlist } from "../utils/storage";
+import { addToCartHelper, addToWishlistHelper } from "../utils/storage";
 import Toast from "../components/Toast";
 
 export default function Product() {
   const { id } = useParams();
-  const product = products.find((p) => p.id == id);
+  const product = products.find((p) => String(p.id) === String(id));
 
-  const [toast, setToast] = useState("");
+  const [toast, setToast] = useState(null);
   const [activeImage, setActiveImage] = useState(0);
+  const [isAddingCart, setIsAddingCart] = useState(false);
+  const [isAddingWishlist, setIsAddingWishlist] = useState(false);
 
-  if (!product) return <h2>Product not found</h2>;
+  if (!product) {
+    return (
+      <div className="cart-empty-container">
+        <div className="cart-empty-content fade-in">
+          <h1>Product not found</h1>
+        </div>
+      </div>
+    );
+  }
 
   // 👇 fallback if only one image
   const images = product.images || [product.image];
 
   // 🛒 ADD TO CART
-  const addToCart = () => {
-    const user = JSON.parse(localStorage.getItem("user"));
+  const handleAddToCart = () => {
+    if (isAddingCart) return;
+    setIsAddingCart(true);
 
-    // 🔥 LOGIN CHECK
-    if (!user) {
-      setToast("Login required ❌");
-      return;
-    }
+    setTimeout(() => {
+      const res = addToCartHelper(product, 1);
 
-    let cart = getCart();
+      if (!res.success) {
+        if (res.reason === "LOGIN_REQUIRED") {
+          setToast({ message: "Please login to add items to cart ❌", type: "error" });
+        } else {
+          setToast({ message: res.message || "Could not add to cart ❌", type: "error" });
+        }
+      } else {
+        setToast({ message: "Added to Cart ✅", type: "success" });
+      }
 
-    const existing = cart.find((item) => item.id === product.id);
-
-    if (existing) {
-      existing.qty += 1; // ✅ FIXED
-    } else {
-      cart.push({ ...product, qty: 1 });
-    }
-
-    setCart(cart);
-    setToast("Added to Cart ✅");
+      setIsAddingCart(false);
+    }, 300);
   };
 
   // ❤️ WISHLIST
-  const addToWishlist = () => {
-    let wishlist = getWishlist();
+  const handleAddToWishlist = () => {
+    if (isAddingWishlist) return;
+    setIsAddingWishlist(true);
 
-    const exists = wishlist.find((item) => item.id === product.id);
-    if (exists) {
-      setToast("Already in Wishlist");
-      return;
-    }
+    setTimeout(() => {
+      const res = addToWishlistHelper(product);
 
-    wishlist.push(product);
-    setWishlist(wishlist);
-    setToast("Added to Wishlist");
+      if (!res.success) {
+        setToast({ message: res.message || "Already in Wishlist ⚠️", type: "info" });
+      } else {
+        setToast({ message: "Added to Wishlist ❤️", type: "success" });
+      }
+
+      setIsAddingWishlist(false);
+    }, 300);
   };
 
   return (
@@ -66,7 +76,7 @@ export default function Product() {
       {/* 🔥 IMAGE GALLERY */}
       <div>
         <div className="main-image">
-          <img src={images[activeImage]} />
+          <img src={images[activeImage]} alt={product.name} />
         </div>
 
         <div className="thumbs">
@@ -74,6 +84,7 @@ export default function Product() {
             <img
               key={index}
               src={img}
+              alt={`${product.name} ${index + 1}`}
               onClick={() => setActiveImage(index)}
               className={activeImage === index ? "active" : ""}
             />
@@ -94,8 +105,13 @@ export default function Product() {
 
         <p className="desc">{product.description}</p>
 
-        <button onClick={addToCart}>Add to Cart</button>
-        <button onClick={addToWishlist}>Add to Wishlist</button>
+        <button onClick={handleAddToCart} disabled={isAddingCart}>
+          {isAddingCart ? "Adding..." : "Add to Cart"}
+        </button>
+
+        <button onClick={handleAddToWishlist} disabled={isAddingWishlist}>
+          {isAddingWishlist ? "Adding..." : "Add to Wishlist"}
+        </button>
 
         {/* 🧠 REVIEWS */}
         <div className="reviews">
@@ -117,7 +133,13 @@ export default function Product() {
         </div>
       </div>
 
-      {toast && <Toast message={toast} onClose={() => setToast("")} />}
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
     </motion.div>
   );
 }

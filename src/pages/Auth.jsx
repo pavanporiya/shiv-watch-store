@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Toast from "../components/Toast";
+import { setUser } from "../utils/storage";
 
 export default function Auth() {
   const [mode, setMode] = useState("login"); // login | signup | forgot
@@ -9,97 +10,150 @@ export default function Auth() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [isLoading, setIsLoading] = useState(false);
   const [toast, setToast] = useState(null);
 
   const navigate = useNavigate();
 
   // STORAGE
-  const getUsers = () => JSON.parse(localStorage.getItem("users")) || [];
-  const setUsers = (users) =>
+  const getUsers = () => {
+    try {
+      return JSON.parse(localStorage.getItem("users")) || [];
+    } catch {
+      return [];
+    }
+  };
+
+  const setUsers = (users) => {
     localStorage.setItem("users", JSON.stringify(users));
+  };
+
+  const validateForm = () => {
+    const trimmedEmail = email.trim();
+    const trimmedPassword = password.trim();
+
+    if (!trimmedEmail || !trimmedPassword) {
+      setToast({ message: "Please fill in all fields ⚠️", type: "error" });
+      return false;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(trimmedEmail)) {
+      setToast({ message: "Please enter a valid email address ⚠️", type: "error" });
+      return false;
+    }
+
+    if (trimmedPassword.length < 6) {
+      setToast({ message: "Password must be at least 6 characters ⚠️", type: "error" });
+      return false;
+    }
+
+    return true;
+  };
 
   // ================= LOGIN =================
-  const handleLogin = () => {
-    const users = getUsers();
+  const handleLogin = (e) => {
+    if (e) e.preventDefault();
+    if (isLoading) return;
 
-    // 🔥 EMPTY VALIDATION
-    if (!email || !password) {
-      setToast({ message: "Please fill all fields ⚠️", type: "error" });
-      return;
-    }
+    if (!validateForm()) return;
 
-    const existingUser = users.find((u) => u.email === email);
-
-    // 🔥 USER NOT FOUND
-    if (!existingUser) {
-      setToast({ message: "User does not exist ❌", type: "error" });
-      return;
-    }
-
-    // 🔥 WRONG PASSWORD
-    if (existingUser.password !== password) {
-      setToast({ message: "Wrong password ❌", type: "error" });
-      return;
-    }
-
-    // 🔥 SUCCESS
-    localStorage.setItem("user", JSON.stringify(existingUser));
-    window.dispatchEvent(new Event("userChanged"));
-
-    setToast({ message: "Login successful ✅", type: "success" });
+    setIsLoading(true);
 
     setTimeout(() => {
-      navigate("/");
-    }, 800);
+      const users = getUsers();
+      const trimmedEmail = email.trim();
+      const existingUser = users.find((u) => u.email.toLowerCase() === trimmedEmail.toLowerCase());
+
+      if (!existingUser) {
+        setIsLoading(false);
+        setToast({ message: "User does not exist. Please sign up ❌", type: "error" });
+        return;
+      }
+
+      if (existingUser.password !== password.trim()) {
+        setIsLoading(false);
+        setToast({ message: "Invalid email or password ❌", type: "error" });
+        return;
+      }
+
+      setUser(existingUser);
+      window.dispatchEvent(new Event("userChanged"));
+
+      setToast({ message: "Login successful ✅", type: "success" });
+
+      setTimeout(() => {
+        setIsLoading(false);
+        navigate("/");
+      }, 600);
+    }, 400);
   };
 
   // ================= SIGNUP =================
-  const handleSignup = () => {
-    const users = getUsers();
+  const handleSignup = (e) => {
+    if (e) e.preventDefault();
+    if (isLoading) return;
 
-    if (!email || !password) {
-      setToast({ message: "Please fill all fields ⚠️", type: "error" });
-      return;
-    }
+    if (!validateForm()) return;
 
-    if (users.find((u) => u.email === email)) {
-      setToast({ message: "User already exists ❌", type: "error" });
-      return;
-    }
-
-    users.push({ email, password });
-    setUsers(users);
-
-    setToast({ message: "Account created ✅", type: "success" });
+    setIsLoading(true);
 
     setTimeout(() => {
-      setMode("login");
-    }, 800);
+      const users = getUsers();
+      const trimmedEmail = email.trim();
+      const trimmedPassword = password.trim();
+
+      if (users.find((u) => u.email.toLowerCase() === trimmedEmail.toLowerCase())) {
+        setIsLoading(false);
+        setToast({ message: "User with this email already exists ❌", type: "error" });
+        return;
+      }
+
+      const newUser = { email: trimmedEmail, password: trimmedPassword };
+      users.push(newUser);
+      setUsers(users);
+
+      setToast({ message: "Account created successfully 🎉", type: "success" });
+
+      setTimeout(() => {
+        setIsLoading(false);
+        setMode("login");
+      }, 600);
+    }, 400);
   };
 
   // ================= RESET =================
-  const handleReset = () => {
-    const users = getUsers();
-    const index = users.findIndex((u) => u.email === email);
+  const handleReset = (e) => {
+    if (e) e.preventDefault();
+    if (isLoading) return;
 
-    if (!email || !password) {
-      setToast({ message: "Please fill all fields ⚠️", type: "error" });
-      return;
-    }
+    if (!validateForm()) return;
 
-    if (index === -1) {
-      setToast({ message: "Email not found ❌", type: "error" });
-      return;
-    }
-
-    users[index].password = password;
-    setUsers(users);
-
-    setToast({ message: "Password updated ✅", type: "success" });
+    setIsLoading(true);
 
     setTimeout(() => {
-      setMode("login");
-    }, 800);
+      const users = getUsers();
+      const trimmedEmail = email.trim();
+      const trimmedPassword = password.trim();
+
+      const index = users.findIndex((u) => u.email.toLowerCase() === trimmedEmail.toLowerCase());
+
+      if (index === -1) {
+        setIsLoading(false);
+        setToast({ message: "Email not found ❌", type: "error" });
+        return;
+      }
+
+      users[index].password = trimmedPassword;
+      setUsers(users);
+
+      setToast({ message: "Password updated successfully ✅", type: "success" });
+
+      setTimeout(() => {
+        setIsLoading(false);
+        setMode("login");
+      }, 600);
+    }, 400);
   };
 
   return (
@@ -110,13 +164,17 @@ export default function Auth() {
           <div className="auth-toggle">
             <span
               className={mode === "login" ? "active" : ""}
-              onClick={() => setMode("login")}
+              onClick={() => {
+                if (!isLoading) setMode("login");
+              }}
             >
               Login
             </span>
             <span
               className={mode === "signup" ? "active" : ""}
-              onClick={() => setMode("signup")}
+              onClick={() => {
+                if (!isLoading) setMode("signup");
+              }}
             >
               Signup
             </span>
@@ -129,12 +187,21 @@ export default function Auth() {
           {mode === "forgot" && "Reset Password"}
         </h2>
 
-        <div className="auth-grid">
+        <form
+          className="auth-grid"
+          onSubmit={(e) => {
+            if (mode === "login") handleLogin(e);
+            else if (mode === "signup") handleSignup(e);
+            else handleReset(e);
+          }}
+        >
           <input
             type="email"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            disabled={isLoading}
+            required
           />
 
           <div className="password-field">
@@ -143,42 +210,69 @@ export default function Auth() {
               placeholder={mode === "forgot" ? "New Password" : "Password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              disabled={isLoading}
+              required
             />
 
-            <span onClick={() => setShowPass(!showPass)}>
+            <span
+              onClick={() => setShowPass(!showPass)}
+              style={{ cursor: isLoading ? "not-allowed" : "pointer" }}
+            >
               {showPass ? "🙈" : "👁️"}
             </span>
           </div>
 
           {/* BUTTONS */}
           {mode === "login" && (
-            <button className="auth-btn" onClick={handleLogin}>
-              Login
+            <button
+              type="submit"
+              className="auth-btn"
+              disabled={isLoading}
+            >
+              {isLoading ? "Logging in..." : "Login"}
             </button>
           )}
 
           {mode === "signup" && (
-            <button className="auth-btn" onClick={handleSignup}>
-              Create Account
+            <button
+              type="submit"
+              className="auth-btn"
+              disabled={isLoading}
+            >
+              {isLoading ? "Creating Account..." : "Create Account"}
             </button>
           )}
 
           {mode === "forgot" && (
-            <button className="auth-btn" onClick={handleReset}>
-              Reset Password
+            <button
+              type="submit"
+              className="auth-btn"
+              disabled={isLoading}
+            >
+              {isLoading ? "Updating Password..." : "Reset Password"}
             </button>
           )}
-        </div>
+        </form>
 
         {/* LINKS */}
         {mode === "login" && (
-          <p className="forgot" onClick={() => setMode("forgot")}>
+          <p
+            className="forgot"
+            onClick={() => {
+              if (!isLoading) setMode("forgot");
+            }}
+          >
             Forgot Password?
           </p>
         )}
 
         {mode === "forgot" && (
-          <p className="forgot" onClick={() => setMode("login")}>
+          <p
+            className="forgot"
+            onClick={() => {
+              if (!isLoading) setMode("login");
+            }}
+          >
             Back to Login
           </p>
         )}
