@@ -110,7 +110,7 @@ const Cart = () => {
 
           return (
             <article key={item.id} className="cart-item">
-              <div style={{ width: "90px", height: "90px", flexShrink: 0, borderRadius: "8px", overflow: "hidden" }}>
+              <div className="cart-item-img-wrapper">
                 <ImageWithFallback
                   src={item.image}
                   alt={item.name || "Cart item"}
