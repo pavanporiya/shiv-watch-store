@@ -3,9 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { getWishlist, removeFromWishlistHelper } from "../utils/storage";
 import ConfirmModal from "../components/ConfirmModal";
 import Toast from "../components/Toast";
+import ImageWithFallback from "../components/ImageWithFallback";
+import EmptyState from "../components/EmptyState";
+import Skeleton from "../components/Skeleton";
 
 export default function Wishlist() {
   const [wishlist, setWishlistState] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [deleteCandidate, setDeleteCandidate] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [toast, setToast] = useState(null);
@@ -13,7 +17,12 @@ export default function Wishlist() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setWishlistState(getWishlist());
+    setIsLoading(true);
+    const timer = setTimeout(() => {
+      setWishlistState(getWishlist());
+      setIsLoading(false);
+    }, 200);
+    return () => clearTimeout(timer);
   }, []);
 
   const requestRemoveItem = (item) => {
@@ -34,39 +43,50 @@ export default function Wishlist() {
   };
 
   return (
-    <div className="wishlist-container">
-      {wishlist.length === 0 ? (
-        <div className="empty-state">
-          <div className="empty-icon">♡</div>
-          <h2>Your wishlist is empty</h2>
-          <p>Save items you love to your wishlist and revisit them anytime.</p>
-          <button onClick={() => navigate("/shop")}>
-            Explore Products
-          </button>
+    <main id="main-content" className="wishlist-container">
+      <h1 className="sr-only">Your Wishlist</h1>
+      {isLoading ? (
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: "20px" }}>
+          <Skeleton height={280} borderRadius="12px" />
+          <Skeleton height={280} borderRadius="12px" />
+          <Skeleton height={280} borderRadius="12px" />
         </div>
+      ) : wishlist.length === 0 ? (
+        <EmptyState
+          icon="♡"
+          title="Your Wishlist is Empty"
+          description="Save items you love to your wishlist and revisit them anytime."
+          actionText="Explore Collection"
+          onAction={() => navigate("/shop")}
+        />
       ) : (
         <div className="wishlist-grid">
           {wishlist.map((item) => (
-            <div className="wishlist-card" key={item.id}>
-              <img
-                src={item.image}
-                alt={item.name || "Wishlist item"}
-                loading="lazy"
-                decoding="async"
-              />
+            <article className="wishlist-card" key={item.id}>
+              <div style={{ width: "100%", height: "180px", borderRadius: "8px", overflow: "hidden" }}>
+                <ImageWithFallback
+                  src={item.image}
+                  alt={item.name || "Wishlist item"}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
 
-              <h3>{item.name}</h3>
+              <h2>{item.name}</h2>
               <p>₹{item.price}</p>
 
               <div className="actions">
                 <button
+                  type="button"
                   onClick={() => navigate(`/product/${item.id}`)}
                   aria-label={`View ${item.name}`}
+                  disabled={isDeleting}
                 >
                   View
                 </button>
 
                 <button
+                  type="button"
                   className="remove"
                   onClick={() => requestRemoveItem(item)}
                   disabled={isDeleting}
@@ -75,7 +95,7 @@ export default function Wishlist() {
                   Remove
                 </button>
               </div>
-            </div>
+            </article>
           ))}
         </div>
       )}
@@ -100,6 +120,6 @@ export default function Wishlist() {
           onClose={() => setToast(null)}
         />
       )}
-    </div>
+    </main>
   );
 }

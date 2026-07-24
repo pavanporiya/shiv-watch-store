@@ -1,14 +1,26 @@
-import { useState } from "react";
+import { useState, memo } from "react";
 import { useNavigate } from "react-router-dom";
 import { addToCartHelper } from "../utils/storage";
 import Toast from "./Toast";
+import ImageWithFallback from "./ImageWithFallback";
 
-export default function ProductCard({ product }) {
+function ProductCard({ product }) {
   const navigate = useNavigate();
   const [isAdding, setIsAdding] = useState(false);
   const [toast, setToast] = useState(null);
 
   if (!product) return null;
+
+  const handleCardClick = () => {
+    navigate(`/product/${product.id}`);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.target === e.currentTarget && (e.key === "Enter" || e.key === " ")) {
+      e.preventDefault();
+      handleCardClick();
+    }
+  };
 
   const handleAddToCart = (e) => {
     e.stopPropagation();
@@ -33,38 +45,31 @@ export default function ProductCard({ product }) {
     }, 250);
   };
 
-  const handleMouseOver = (e) => {
-    if (product.image2) {
-      e.currentTarget.src = product.image2;
-    }
-  };
-
-  const handleMouseOut = (e) => {
-    if (product.image) {
-      e.currentTarget.src = product.image;
-    }
-  };
-
   return (
-    <div
+    <article
       className="card"
-      onClick={() => navigate(`/product/${product.id}`)}
-      role="article"
+      onClick={handleCardClick}
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
+      aria-label={`View details for ${product.name}`}
     >
-      {/* IMAGE WITH HOVER SWAP */}
-      <img
-        src={product.image}
-        alt={product.name || "Watch image"}
-        loading="lazy"
-        decoding="async"
-        onMouseOver={handleMouseOver}
-        onMouseOut={handleMouseOut}
-      />
+      {/* IMAGE WITH HOVER SWAP AND FALLBACK */}
+      <div className="image-wrapper" style={{ width: "100%", height: "180px" }}>
+        <ImageWithFallback
+          src={product.image}
+          image2={product.image2}
+          alt={product.name || "Watch image"}
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
 
       <h3>{product.name}</h3>
       <p>₹{product.price}</p>
 
       <button
+        type="button"
+        className="product-btn"
         onClick={handleAddToCart}
         disabled={isAdding}
         aria-label={`Add ${product.name || "item"} to cart`}
@@ -79,6 +84,8 @@ export default function ProductCard({ product }) {
           onClose={() => setToast(null)}
         />
       )}
-    </div>
+    </article>
   );
 }
+
+export default memo(ProductCard);

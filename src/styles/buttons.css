@@ -1,146 +1,362 @@
-/* ================= BUTTONS DESIGN SYSTEM ================= */
+/* ==========================================================================
+   LUXURY BUTTON DESIGN SYSTEM - SHIV WATCH STORE
+   ========================================================================== */
 
-/* BASE GLOBAL BUTTON RESET */
-button {
+/* 1. BASE GLOBAL BUTTON RESET */
+button,
+.btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   font-family: inherit;
   font-size: 14px;
   font-weight: 500;
-  letter-spacing: 0.2px;
-  border-radius: var(--radius-full);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  border-radius: var(--btn-radius, 11px);
   border: 1px solid transparent;
-  background: var(--accent);
-  color: black;
+  background: none;
+  color: var(--text-primary, #f5f5f7);
   cursor: pointer;
-  padding: 0 24px;
-  height: var(--btn-height-md);
-  transition: var(--transition);
+  padding: 0 28px;
+  height: var(--btn-height-md, 46px);
+  transition: background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              color 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   user-select: none;
   white-space: nowrap;
+  box-sizing: border-box;
+  outline: none;
+  text-decoration: none;
 }
 
-button:hover {
-  opacity: 0.92;
-  transform: translateY(-1px);
+button:focus-visible,
+.btn:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.5);
+  outline-offset: 2px;
 }
 
-button:active {
-  transform: scale(0.98);
+button:disabled,
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed !important;
+  transform: none !important;
+  box-shadow: none !important;
 }
 
-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
-}
-
-/* HERO BUTTON */
-.hero-btn {
-  margin-top: 24px;
-  height: 48px;
-  padding: 0 32px;
-  border-radius: var(--radius-full);
-  background: white;
-  color: black;
-  font-size: 15px;
-  font-weight: 500;
-  border: none;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
-  transition: var(--transition);
-}
-
-.hero-btn:hover {
-  transform: translateY(-2px);
-  background: #f8f8f8;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
-}
-
-.hero-btn:active {
-  transform: scale(0.98);
-}
-
-/* CARD BUTTONS (PRIMARY) */
+/* 2. PRIMARY BUTTON (APPLE / ROLEX / STRIPE INSPIRED) - ADD TO CART / HERO / AUTH / CHECKOUT */
+.btn-primary,
+.hero-btn,
 .product-btn,
-.card button {
-  height: var(--btn-height-sm);
-  padding: 0 16px;
-  border-radius: var(--radius-md);
-  background: white;
-  color: black;
-  font-size: 13px;
-  font-weight: 500;
-  border: none;
-  transition: var(--transition);
-}
-
-.product-btn:hover,
-.card button:hover {
-  background: #e5e5e7;
-  transform: translateY(-1px);
-}
-
-/* QUICK VIEW BUTTON (SECONDARY) */
-.quick-view-btn {
-  height: var(--btn-height-sm);
-  padding: 0 16px;
-  border-radius: var(--radius-md);
-  background: #1a1a1e;
-  color: var(--text-primary);
-  border: 1px solid var(--border);
-  font-size: 13px;
-  font-weight: 500;
-  transition: var(--transition);
-}
-
-.quick-view-btn:hover {
-  background: #28282c;
-  border-color: var(--border-hover);
-  color: white;
-  transform: translateY(-1px);
-}
-
-/* AUTH BUTTONS */
+.btn-primary-action,
 .auth-btn,
-.auth-grid button {
-  width: 100%;
-  height: var(--btn-height-md);
-  margin-top: 10px;
-  padding: 0 20px;
-  border-radius: var(--radius-full);
-  background: white;
-  color: black;
+.auth-grid button,
+.checkout-btn,
+.checkout-container button,
+.shop-btn,
+.empty-state button {
+  height: 46px;
+  padding: 0 28px;
+  border-radius: 11px;
+  background: #ffffff;
+  color: #09090b;
   font-size: 14px;
   font-weight: 500;
-  border: none;
-  transition: var(--transition);
+  letter-spacing: -0.01em;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
-.auth-btn:hover,
-.auth-grid button:hover {
-  background: #f0f0f2;
+.btn-primary:hover:not(:disabled),
+.hero-btn:hover:not(:disabled),
+.product-btn:hover:not(:disabled),
+.btn-primary-action:hover:not(:disabled),
+.auth-btn:hover:not(:disabled),
+.auth-grid button:hover:not(:disabled),
+.checkout-btn:hover:not(:disabled),
+.checkout-container button:hover:not(:disabled),
+.shop-btn:hover:not(:disabled),
+.empty-state button:hover:not(:disabled) {
+  background: #eef0f2;
+  border-color: #ffffff;
+  color: #000000;
   transform: translateY(-1px);
-  opacity: 1;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
 }
 
-/* LOGOUT BUTTON */
+.btn-primary:active:not(:disabled),
+.hero-btn:active:not(:disabled),
+.product-btn:active:not(:disabled),
+.btn-primary-action:active:not(:disabled),
+.auth-btn:active:not(:disabled),
+.auth-grid button:active:not(:disabled),
+.checkout-btn:active:not(:disabled),
+.checkout-container button:active:not(:disabled),
+.shop-btn:active:not(:disabled),
+.empty-state button:active:not(:disabled) {
+  transform: scale(0.985);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* CARD BUTTON OVERRIDES FOR PROPORTIONAL FIT */
+.product-btn,
+.card button {
+  height: 42px;
+  padding: 0 20px;
+  border-radius: 11px;
+  font-size: 13.5px;
+  font-weight: 500;
+}
+
+/* 3. SECONDARY BUTTON (QUICK VIEW / AUXILIARY ACTIONS) */
+.btn-secondary,
+.quick-view-btn,
+.btn-secondary-action {
+  height: 42px;
+  padding: 0 20px;
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-primary, #f5f5f7);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  font-size: 13.5px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.btn-secondary-action {
+  height: 46px;
+  padding: 0 28px;
+  font-size: 14px;
+}
+
+.btn-secondary:hover:not(:disabled),
+.quick-view-btn:hover:not(:disabled),
+.btn-secondary-action:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.28);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.btn-secondary:active:not(:disabled),
+.quick-view-btn:active:not(:disabled),
+.btn-secondary-action:active:not(:disabled) {
+  transform: scale(0.985);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* 4. MODAL ACTION BUTTONS */
+.confirm-modal-cancel-btn {
+  height: 44px;
+  padding: 0 24px;
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: var(--text-primary, #ffffff);
+  font-size: 13.5px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.confirm-modal-cancel-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.28);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.confirm-modal-cancel-btn:active:not(:disabled) {
+  transform: scale(0.985);
+}
+
+.confirm-modal-delete-btn {
+  height: 44px;
+  padding: 0 24px;
+  border-radius: 11px;
+  background: rgba(239, 68, 68, 0.14);
+  border: 1px solid rgba(239, 68, 68, 0.28);
+  color: #f87171;
+  font-size: 13.5px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.confirm-modal-delete-btn:hover:not(:disabled) {
+  background: #dc2626;
+  border-color: #dc2626;
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(220, 38, 38, 0.25);
+}
+
+.confirm-modal-delete-btn:active:not(:disabled) {
+  transform: scale(0.985);
+}
+
+/* 5. WISHLIST ACTION BUTTONS */
+.actions button {
+  height: 38px;
+  padding: 0 18px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.actions button:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.28);
+  transform: translateY(-1px);
+}
+
+.actions button.remove {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  color: #f87171;
+}
+
+.actions button.remove:hover:not(:disabled) {
+  background: #dc2626;
+  border-color: #dc2626;
+  color: #ffffff;
+}
+
+/* 6. UTILITY & FILTER BUTTONS */
 .logout-btn {
-  height: auto;
-  min-height: 32px;
+  height: 36px;
+  padding: 0 16px;
+  border-radius: 10px;
   background: transparent;
-  border: 1px solid var(--border);
-  padding: 6px 16px;
-  border-radius: var(--radius-full);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   color: var(--text-secondary);
   font-size: 13px;
   font-weight: 500;
-  transition: var(--transition);
 }
 
-.logout-btn:hover {
-  border-color: var(--border-hover);
+.logout-btn:hover:not(:disabled) {
+  border-color: rgba(255, 255, 255, 0.28);
   color: var(--text-primary);
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.06);
+  transform: translateY(-1px);
+}
+
+/* Category Filter Pills */
+.category-buttons button {
+  height: 34px;
+  padding: 0 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.category-buttons button:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.category-buttons button.active {
+  background: #ffffff;
+  color: #09090b;
+  border-color: #ffffff;
+  font-weight: 500;
+}
+
+/* Price Filter Buttons */
+.price-buttons button {
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  justify-content: flex-start;
+}
+
+.price-buttons button:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.price-buttons button.active {
+  background: #ffffff;
+  color: #09090b;
+  border-color: #ffffff;
+  font-weight: 500;
+}
+
+/* Quantity Control Buttons */
+.qty-controls button {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.qty-controls button:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+/* Remove Text Button */
+.remove-btn {
+  height: auto;
+  padding: 0;
+  background: none;
+  border: none;
+  color: #ef4444;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 0;
+  text-decoration: none;
+}
+
+.remove-btn:hover:not(:disabled) {
+  color: #dc2626;
+  text-decoration: underline;
+  background: none;
   transform: none;
 }
+
+/* Modal Close Button */
+.close-btn {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.close-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: scale(1.05);
+}
+
+.close-btn:active:not(:disabled) {
+  transform: scale(0.95);
+}
+

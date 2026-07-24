@@ -78,42 +78,57 @@ export default function Checkout() {
   }
 
   return (
-    <div className="checkout-container">
-      <h2>Checkout</h2>
+    <main id="main-content" className="checkout-container">
+      <h1>Checkout</h1>
 
       <form onSubmit={handleOrder} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-        <input
-          type="text"
-          placeholder="Full Name"
-          aria-label="Full Name"
-          autoComplete="name"
-          value={form.name}
-          onChange={(e) => setForm({ ...form, name: e.target.value })}
-          disabled={isSubmitting}
-          required
-        />
+        <div>
+          <label htmlFor="checkout-name" className="sr-only">Full Name</label>
+          <input
+            id="checkout-name"
+            type="text"
+            placeholder="Full Name"
+            aria-label="Full Name"
+            autoComplete="name"
+            value={form.name}
+            onChange={(e) => setForm({ ...form, name: e.target.value })}
+            disabled={isSubmitting}
+            required
+            style={{ width: "100%" }}
+          />
+        </div>
 
-        <input
-          type="text"
-          placeholder="Delivery Address"
-          aria-label="Delivery Address"
-          autoComplete="street-address"
-          value={form.address}
-          onChange={(e) => setForm({ ...form, address: e.target.value })}
-          disabled={isSubmitting}
-          required
-        />
+        <div>
+          <label htmlFor="checkout-address" className="sr-only">Delivery Address</label>
+          <input
+            id="checkout-address"
+            type="text"
+            placeholder="Delivery Address"
+            aria-label="Delivery Address"
+            autoComplete="street-address"
+            value={form.address}
+            onChange={(e) => setForm({ ...form, address: e.target.value })}
+            disabled={isSubmitting}
+            required
+            style={{ width: "100%" }}
+          />
+        </div>
 
-        <input
-          type="tel"
-          placeholder="Phone Number"
-          aria-label="Phone Number"
-          autoComplete="tel"
-          value={form.phone}
-          onChange={(e) => setForm({ ...form, phone: e.target.value })}
-          disabled={isSubmitting}
-          required
-        />
+        <div>
+          <label htmlFor="checkout-phone" className="sr-only">Phone Number</label>
+          <input
+            id="checkout-phone"
+            type="tel"
+            placeholder="Phone Number"
+            aria-label="Phone Number"
+            autoComplete="tel"
+            value={form.phone}
+            onChange={(e) => setForm({ ...form, phone: e.target.value })}
+            disabled={isSubmitting}
+            required
+            style={{ width: "100%" }}
+          />
+        </div>
 
         <div style={{ marginTop: "12px", fontSize: "16px", fontWeight: "600" }}>
           Total Amount: ₹{total}
@@ -131,6 +146,6 @@ export default function Checkout() {
           onClose={() => setToast(null)}
         />
       )}
-    </div>
+    </main>
   );
 }

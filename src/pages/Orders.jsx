@@ -1,15 +1,23 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getOrders } from "../utils/storage";
+import ImageWithFallback from "../components/ImageWithFallback";
+import EmptyState from "../components/EmptyState";
+import Skeleton from "../components/Skeleton";
 
 export default function Orders() {
   const [orders, setOrders] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
   // LOAD ORDERS FROM LOCALSTORAGE
   useEffect(() => {
     const loadOrders = () => {
-      setOrders(getOrders());
+      setIsLoading(true);
+      setTimeout(() => {
+        setOrders(getOrders());
+        setIsLoading(false);
+      }, 200);
     };
 
     loadOrders();
@@ -23,26 +31,32 @@ export default function Orders() {
   }, []);
 
   return (
-    <div className="orders-container">
+    <main id="main-content" className="orders-container">
       <h1>Your Orders</h1>
 
-      {/* EMPTY STATE */}
-      {orders.length === 0 ? (
-        <div className="empty-state" style={{ marginTop: "40px" }}>
-          <div className="empty-icon">📦</div>
-          <h2>No orders yet</h2>
-          <p>You haven't placed any orders yet. Start exploring our watch collection.</p>
-          <button onClick={() => navigate("/shop")}>
-            Explore Watches
-          </button>
+      {/* LOADING SKELETON */}
+      {isLoading ? (
+        <div style={{ display: "flex", flexDirection: "column", gap: "16px", marginTop: "24px" }}>
+          <Skeleton height={140} borderRadius="12px" />
+          <Skeleton height={140} borderRadius="12px" />
         </div>
+      ) : orders.length === 0 ? (
+        /* EMPTY STATE */
+        <EmptyState
+          icon="📦"
+          title="No Orders Placed Yet"
+          description="Your order history is currently empty. Explore our watch collection to place your first order."
+          actionText="Start Shopping"
+          onAction={() => navigate("/shop")}
+        />
       ) : (
+        /* ORDERS LIST */
         orders.map((order) => (
-          <div className="order-card" key={order.id}>
+          <article className="order-card" key={order.id}>
             {/* HEADER */}
             <div className="order-header">
               <div>
-                <h3>Order #{order.id}</h3>
+                <h2>Order #{order.id}</h2>
                 <p>{order.date}</p>
               </div>
 
@@ -51,28 +65,31 @@ export default function Orders() {
 
             {/* ITEMS */}
             <div className="order-items">
-              {order.items && order.items.map((item, i) => (
-                <div className="order-item" key={item.id || i}>
-                  <img
-                    src={item.image}
-                    alt={item.name || "Ordered watch"}
-                    loading="lazy"
-                    decoding="async"
-                  />
+              {order.items &&
+                order.items.map((item, i) => (
+                  <div className="order-item" key={item.id || i}>
+                    <div style={{ width: "60px", height: "60px", borderRadius: "6px", overflow: "hidden", flexShrink: 0 }}>
+                      <ImageWithFallback
+                        src={item.image}
+                        alt={item.name || "Ordered watch"}
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </div>
 
-                  <div>
-                    <p>{item.name}</p>
-                    <span>Qty: {item.qty || item.quantity || 1}</span>
+                    <div>
+                      <p>{item.name}</p>
+                      <span>Qty: {item.qty || item.quantity || 1}</span>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
             </div>
 
             {/* FOOTER */}
             <div className="order-footer">Total: ₹{order.total}</div>
-          </div>
+          </article>
         ))
       )}
-    </div>
+    </main>
   );
 }

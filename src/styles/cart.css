@@ -165,25 +165,10 @@
   border-top: 1px solid var(--border);
 }
 
-/* CHECKOUT BUTTON */
+/* CHECKOUT BUTTON LAYOUT */
 .checkout-btn {
   width: 100%;
   margin-top: var(--space-lg);
-  height: var(--btn-height-md);
-  padding: 0 20px;
-  border-radius: var(--radius-full);
-  background: white;
-  color: black;
-  font-size: 14px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  transition: var(--transition);
-}
-
-.checkout-btn:hover {
-  background: #f0f0f2;
-  transform: translateY(-1px);
 }
 
 /* ===== EMPTY CART ===== */
@@ -204,21 +189,6 @@
 
 .shop-btn {
   margin-top: var(--space-md);
-  height: var(--btn-height-md);
-  padding: 0 24px;
-  border-radius: var(--radius-full);
-  background: white;
-  color: black;
-  font-size: 14px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  transition: var(--transition);
-}
-
-.shop-btn:hover {
-  background: #f0f0f2;
-  transform: translateY(-1px);
 }
 
 /* RESPONSIVE */

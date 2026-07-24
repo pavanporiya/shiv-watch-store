@@ -157,53 +157,43 @@ export default function Auth() {
   };
 
   return (
-    <div className="auth-container">
+    <main id="main-content" className="auth-container">
       <div className="auth-box">
         {/* TOGGLE */}
         {mode !== "forgot" && (
-          <div className="auth-toggle" role="tablist">
-            <span
+          <div className="auth-toggle" role="tablist" aria-label="Authentication mode">
+            <button
+              type="button"
               role="tab"
-              tabIndex={0}
               aria-selected={mode === "login"}
               className={mode === "login" ? "active" : ""}
               onClick={() => {
                 if (!isLoading) setMode("login");
               }}
-              onKeyDown={(e) => {
-                if ((e.key === "Enter" || e.key === " ") && !isLoading) {
-                  e.preventDefault();
-                  setMode("login");
-                }
-              }}
+              style={{ background: "none", border: "none", font: "inherit", cursor: "pointer" }}
             >
               Login
-            </span>
-            <span
+            </button>
+            <button
+              type="button"
               role="tab"
-              tabIndex={0}
               aria-selected={mode === "signup"}
               className={mode === "signup" ? "active" : ""}
               onClick={() => {
                 if (!isLoading) setMode("signup");
               }}
-              onKeyDown={(e) => {
-                if ((e.key === "Enter" || e.key === " ") && !isLoading) {
-                  e.preventDefault();
-                  setMode("signup");
-                }
-              }}
+              style={{ background: "none", border: "none", font: "inherit", cursor: "pointer" }}
             >
               Signup
-            </span>
+            </button>
           </div>
         )}
 
-        <h2>
+        <h1>
           {mode === "login" && "Welcome Back"}
           {mode === "signup" && "Create Account"}
           {mode === "forgot" && "Reset Password"}
-        </h2>
+        </h1>
 
         <form
           className="auth-grid"
@@ -213,19 +203,28 @@ export default function Auth() {
             else handleReset(e);
           }}
         >
-          <input
-            type="email"
-            placeholder="Email"
-            aria-label="Email address"
-            autoComplete="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            disabled={isLoading}
-            required
-          />
+          <div>
+            <label htmlFor="auth-email" className="sr-only">Email address</label>
+            <input
+              id="auth-email"
+              type="email"
+              placeholder="Email"
+              aria-label="Email address"
+              autoComplete="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              disabled={isLoading}
+              required
+              style={{ width: "100%" }}
+            />
+          </div>
 
           <div className="password-field">
+            <label htmlFor="auth-password" className="sr-only">
+              {mode === "forgot" ? "New Password" : "Password"}
+            </label>
             <input
+              id="auth-password"
               type={showPass ? "text" : "password"}
               placeholder={mode === "forgot" ? "New Password" : "Password"}
               aria-label={mode === "forgot" ? "New Password" : "Password"}
@@ -288,41 +287,29 @@ export default function Auth() {
 
         {/* LINKS */}
         {mode === "login" && (
-          <p
+          <button
+            type="button"
             className="forgot"
-            role="button"
-            tabIndex={0}
             onClick={() => {
               if (!isLoading) setMode("forgot");
             }}
-            onKeyDown={(e) => {
-              if ((e.key === "Enter" || e.key === " ") && !isLoading) {
-                e.preventDefault();
-                setMode("forgot");
-              }
-            }}
+            style={{ background: "none", border: "none", font: "inherit", cursor: "pointer" }}
           >
             Forgot Password?
-          </p>
+          </button>
         )}
 
         {mode === "forgot" && (
-          <p
+          <button
+            type="button"
             className="forgot"
-            role="button"
-            tabIndex={0}
             onClick={() => {
               if (!isLoading) setMode("login");
             }}
-            onKeyDown={(e) => {
-              if ((e.key === "Enter" || e.key === " ") && !isLoading) {
-                e.preventDefault();
-                setMode("login");
-              }
-            }}
+            style={{ background: "none", border: "none", font: "inherit", cursor: "pointer" }}
           >
             Back to Login
-          </p>
+          </button>
         )}
       </div>
 
@@ -334,6 +321,6 @@ export default function Auth() {
           onClose={() => setToast(null)}
         />
       )}
-    </div>
+    </main>
   );
 }

@@ -33,42 +33,48 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="nav-container">
-      <Link to="/" className="logo" onClick={closeMenu}>
-        Shiv Watch
-      </Link>
+    <header className="site-header">
+      <a href="#main-content" className="skip-link">
+        Skip to main content
+      </a>
+      <nav className="nav-container" aria-label="Main Navigation">
+        <Link to="/" className="logo" onClick={closeMenu}>
+          Shiv Watch
+        </Link>
 
-      <button 
-        className={`hamburger-btn ${menuOpen ? "open" : ""}`} 
-        onClick={() => setMenuOpen(!menuOpen)}
-        aria-label="Toggle navigation menu"
-        aria-expanded={menuOpen}
-        aria-controls="nav-menu"
-      >
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+        <button 
+          type="button"
+          className={`hamburger-btn ${menuOpen ? "open" : ""}`} 
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Toggle navigation menu"
+          aria-expanded={menuOpen}
+          aria-controls="nav-menu"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
 
-      <div id="nav-menu" className={`nav-items ${menuOpen ? "active" : ""}`}>
-        <Link to="/" className="nav-link" onClick={closeMenu}>Home</Link>
-        <Link to="/shop" className="nav-link" onClick={closeMenu}>Shop</Link>
+        <div id="nav-menu" className={`nav-items ${menuOpen ? "active" : ""}`}>
+          <Link to="/" className="nav-link" onClick={closeMenu}>Home</Link>
+          <Link to="/shop" className="nav-link" onClick={closeMenu}>Shop</Link>
 
-        {user && (
-          <>
-            <Link to="/cart" id="cart-icon" className="nav-link" onClick={closeMenu}>Cart</Link>
-            <Link to="/orders" className="nav-link" onClick={closeMenu}>Orders</Link>
-          </>
-        )}
+          {user && (
+            <>
+              <Link to="/cart" id="cart-icon" className="nav-link" onClick={closeMenu}>Cart</Link>
+              <Link to="/orders" className="nav-link" onClick={closeMenu}>Orders</Link>
+            </>
+          )}
 
-        {!user ? (
-          <Link to="/auth" className="nav-link" onClick={closeMenu}>Login</Link>
-        ) : (
-          <button className="logout-btn" onClick={handleLogout}>
-            Logout
-          </button>
-        )}
-      </div>
-    </nav>
+          {!user ? (
+            <Link to="/auth" className="nav-link" onClick={closeMenu}>Login</Link>
+          ) : (
+            <button type="button" className="logout-btn" onClick={handleLogout}>
+              Logout
+            </button>
+          )}
+        </div>
+      </nav>
+    </header>
   );
 }
