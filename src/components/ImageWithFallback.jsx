@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export default function ImageWithFallback({
   src,
@@ -17,12 +17,26 @@ export default function ImageWithFallback({
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(false);
   const [currentSrc, setCurrentSrc] = useState(src);
+  const imgRef = useRef(null);
 
   useEffect(() => {
-    setLoaded(false);
     setError(false);
     setCurrentSrc(src);
+    setLoaded(false);
   }, [src]);
+
+  useEffect(() => {
+    if (imgRef.current) {
+      if (imgRef.current.complete) {
+        if (imgRef.current.naturalWidth !== 0) {
+          setLoaded(true);
+        } else {
+          setError(true);
+          setLoaded(true);
+        }
+      }
+    }
+  }, [currentSrc]);
 
   const handleLoad = () => {
     setLoaded(true);
@@ -122,6 +136,7 @@ export default function ImageWithFallback({
         />
       )}
       <img
+        ref={imgRef}
         src={currentSrc}
         alt={alt}
         loading={loading}
