@@ -48,13 +48,21 @@ export default function Wishlist() {
         <div className="wishlist-grid">
           {wishlist.map((item) => (
             <div className="wishlist-card" key={item.id}>
-              <img src={item.image} alt={item.name} />
+              <img
+                src={item.image}
+                alt={item.name || "Wishlist item"}
+                loading="lazy"
+                decoding="async"
+              />
 
               <h3>{item.name}</h3>
               <p>₹{item.price}</p>
 
               <div className="actions">
-                <button onClick={() => navigate(`/product/${item.id}`)}>
+                <button
+                  onClick={() => navigate(`/product/${item.id}`)}
+                  aria-label={`View ${item.name}`}
+                >
                   View
                 </button>
 
@@ -62,6 +70,7 @@ export default function Wishlist() {
                   className="remove"
                   onClick={() => requestRemoveItem(item)}
                   disabled={isDeleting}
+                  aria-label={`Remove ${item.name} from wishlist`}
                 >
                   Remove
                 </button>

@@ -85,6 +85,8 @@ export default function Checkout() {
         <input
           type="text"
           placeholder="Full Name"
+          aria-label="Full Name"
+          autoComplete="name"
           value={form.name}
           onChange={(e) => setForm({ ...form, name: e.target.value })}
           disabled={isSubmitting}
@@ -94,6 +96,8 @@ export default function Checkout() {
         <input
           type="text"
           placeholder="Delivery Address"
+          aria-label="Delivery Address"
+          autoComplete="street-address"
           value={form.address}
           onChange={(e) => setForm({ ...form, address: e.target.value })}
           disabled={isSubmitting}
@@ -103,6 +107,8 @@ export default function Checkout() {
         <input
           type="tel"
           placeholder="Phone Number"
+          aria-label="Phone Number"
+          autoComplete="tel"
           value={form.phone}
           onChange={(e) => setForm({ ...form, phone: e.target.value })}
           disabled={isSubmitting}
@@ -113,7 +119,7 @@ export default function Checkout() {
           Total Amount: ₹{total}
         </div>
 
-        <button type="submit" onClick={handleOrder} disabled={isSubmitting}>
+        <button type="submit" disabled={isSubmitting}>
           {isSubmitting ? "Placing Order..." : "Place Order"}
         </button>
       </form>

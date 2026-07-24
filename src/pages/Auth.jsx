@@ -161,19 +161,37 @@ export default function Auth() {
       <div className="auth-box">
         {/* TOGGLE */}
         {mode !== "forgot" && (
-          <div className="auth-toggle">
+          <div className="auth-toggle" role="tablist">
             <span
+              role="tab"
+              tabIndex={0}
+              aria-selected={mode === "login"}
               className={mode === "login" ? "active" : ""}
               onClick={() => {
                 if (!isLoading) setMode("login");
+              }}
+              onKeyDown={(e) => {
+                if ((e.key === "Enter" || e.key === " ") && !isLoading) {
+                  e.preventDefault();
+                  setMode("login");
+                }
               }}
             >
               Login
             </span>
             <span
+              role="tab"
+              tabIndex={0}
+              aria-selected={mode === "signup"}
               className={mode === "signup" ? "active" : ""}
               onClick={() => {
                 if (!isLoading) setMode("signup");
+              }}
+              onKeyDown={(e) => {
+                if ((e.key === "Enter" || e.key === " ") && !isLoading) {
+                  e.preventDefault();
+                  setMode("signup");
+                }
               }}
             >
               Signup
@@ -198,6 +216,8 @@ export default function Auth() {
           <input
             type="email"
             placeholder="Email"
+            aria-label="Email address"
+            autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             disabled={isLoading}
@@ -208,18 +228,30 @@ export default function Auth() {
             <input
               type={showPass ? "text" : "password"}
               placeholder={mode === "forgot" ? "New Password" : "Password"}
+              aria-label={mode === "forgot" ? "New Password" : "Password"}
+              autoComplete={mode === "login" ? "current-password" : "new-password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               disabled={isLoading}
               required
             />
 
-            <span
+            <button
+              type="button"
+              className="pass-toggle-btn"
+              aria-label={showPass ? "Hide password" : "Show password"}
               onClick={() => setShowPass(!showPass)}
-              style={{ cursor: isLoading ? "not-allowed" : "pointer" }}
+              disabled={isLoading}
+              style={{
+                background: "none",
+                border: "none",
+                cursor: isLoading ? "not-allowed" : "pointer",
+                padding: 0,
+                color: "inherit"
+              }}
             >
               {showPass ? "🙈" : "👁️"}
-            </span>
+            </button>
           </div>
 
           {/* BUTTONS */}
@@ -258,8 +290,16 @@ export default function Auth() {
         {mode === "login" && (
           <p
             className="forgot"
+            role="button"
+            tabIndex={0}
             onClick={() => {
               if (!isLoading) setMode("forgot");
+            }}
+            onKeyDown={(e) => {
+              if ((e.key === "Enter" || e.key === " ") && !isLoading) {
+                e.preventDefault();
+                setMode("forgot");
+              }
             }}
           >
             Forgot Password?
@@ -269,8 +309,16 @@ export default function Auth() {
         {mode === "forgot" && (
           <p
             className="forgot"
+            role="button"
+            tabIndex={0}
             onClick={() => {
               if (!isLoading) setMode("login");
+            }}
+            onKeyDown={(e) => {
+              if ((e.key === "Enter" || e.key === " ") && !isLoading) {
+                e.preventDefault();
+                setMode("login");
+              }
             }}
           >
             Back to Login

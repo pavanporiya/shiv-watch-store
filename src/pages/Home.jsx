@@ -67,13 +67,23 @@ export default function Home() {
           <section className="section dark">
             <h2>Featured Collection</h2>
             <div className="featured-grid">
-              <div className="featured-card" onClick={() => navigate("/shop")}>
-                <img src="https://images.unsplash.com/photo-1524592094714-0f0654e20314" />
+              <div className="featured-card" onClick={() => navigate("/shop")} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") navigate("/shop"); }}>
+                <img
+                  src="https://images.unsplash.com/photo-1524592094714-0f0654e20314"
+                  alt="Luxury Series Watch"
+                  loading="lazy"
+                  decoding="async"
+                />
                 <div className="overlay"><h3>Luxury Series</h3></div>
               </div>
 
-              <div className="featured-card" onClick={() => navigate("/shop")}>
-                <img src="https://images.unsplash.com/photo-1622434641406-a158123450f9" />
+              <div className="featured-card" onClick={() => navigate("/shop")} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") navigate("/shop"); }}>
+                <img
+                  src="https://images.unsplash.com/photo-1622434641406-a158123450f9"
+                  alt="Sport Series Watch"
+                  loading="lazy"
+                  decoding="async"
+                />
                 <div className="overlay"><h3>Sport Series</h3></div>
               </div>
             </div>

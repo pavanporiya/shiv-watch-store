@@ -76,7 +76,11 @@ export default function Product() {
       {/* 🔥 IMAGE GALLERY */}
       <div>
         <div className="main-image">
-          <img src={images[activeImage]} alt={product.name} />
+          <img
+            src={images[activeImage]}
+            alt={product.name || "Product image"}
+            decoding="async"
+          />
         </div>
 
         <div className="thumbs">
@@ -84,8 +88,19 @@ export default function Product() {
             <img
               key={index}
               src={img}
-              alt={`${product.name} ${index + 1}`}
+              alt={`${product.name || "Product"} thumbnail ${index + 1}`}
+              loading="lazy"
+              decoding="async"
+              tabIndex={0}
+              role="button"
+              aria-label={`View thumbnail ${index + 1}`}
               onClick={() => setActiveImage(index)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  setActiveImage(index);
+                }
+              }}
               className={activeImage === index ? "active" : ""}
             />
           ))}

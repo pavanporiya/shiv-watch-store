@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getCart, updateCartQtyHelper, removeFromCartHelper } from "../utils/storage";
 import ConfirmModal from "../components/ConfirmModal";
@@ -17,7 +17,7 @@ const Cart = () => {
     setCartState(getCart());
   }, []);
 
-  const total = cart.reduce((acc, item) => acc + item.price * (item.qty || item.quantity || 1), 0);
+  const total = cart.reduce((acc, item) => acc + (item.price || 0) * (item.qty || item.quantity || 1), 0);
 
   const handleIncreaseQty = (item) => {
     setActionLoadingId(`inc-${item.id}`);
@@ -91,7 +91,12 @@ const Cart = () => {
 
           return (
             <div key={item.id} className="cart-item">
-              <img src={item.image} alt={item.name} />
+              <img
+                src={item.image}
+                alt={item.name || "Cart item"}
+                loading="lazy"
+                decoding="async"
+              />
 
               <div className="cart-info">
                 <h3>{item.name}</h3>
@@ -101,6 +106,7 @@ const Cart = () => {
                   <button
                     onClick={() => handleDecreaseQty(item)}
                     disabled={currentQty <= 1 || isDecLoading || isIncLoading}
+                    aria-label={`Decrease quantity for ${item.name}`}
                   >
                     -
                   </button>
@@ -108,6 +114,7 @@ const Cart = () => {
                   <button
                     onClick={() => handleIncreaseQty(item)}
                     disabled={isIncLoading || isDecLoading}
+                    aria-label={`Increase quantity for ${item.name}`}
                   >
                     +
                   </button>
@@ -117,6 +124,7 @@ const Cart = () => {
                   className="remove-btn"
                   onClick={() => requestRemoveItem(item)}
                   disabled={isDeleting}
+                  aria-label={`Remove ${item.name} from cart`}
                 >
                   Remove
                 </button>

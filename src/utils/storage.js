@@ -1,6 +1,9 @@
 export const getData = (key) => {
   try {
-    return JSON.parse(localStorage.getItem(key)) || [];
+    const item = localStorage.getItem(key);
+    if (!item) return [];
+    const parsed = JSON.parse(item);
+    return Array.isArray(parsed) ? parsed : [];
   } catch (e) {
     return [];
   }

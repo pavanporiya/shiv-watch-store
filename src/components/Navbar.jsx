@@ -42,13 +42,15 @@ export default function Navbar() {
         className={`hamburger-btn ${menuOpen ? "open" : ""}`} 
         onClick={() => setMenuOpen(!menuOpen)}
         aria-label="Toggle navigation menu"
+        aria-expanded={menuOpen}
+        aria-controls="nav-menu"
       >
         <span></span>
         <span></span>
         <span></span>
       </button>
 
-      <div className={`nav-items ${menuOpen ? "active" : ""}`}>
+      <div id="nav-menu" className={`nav-items ${menuOpen ? "active" : ""}`}>
         <Link to="/" className="nav-link" onClick={closeMenu}>Home</Link>
         <Link to="/shop" className="nav-link" onClick={closeMenu}>Shop</Link>
 

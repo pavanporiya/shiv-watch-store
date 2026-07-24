@@ -8,6 +8,8 @@ export default function ProductCard({ product }) {
   const [isAdding, setIsAdding] = useState(false);
   const [toast, setToast] = useState(null);
 
+  if (!product) return null;
+
   const handleAddToCart = (e) => {
     e.stopPropagation();
     if (isAdding) return;
@@ -31,27 +33,42 @@ export default function ProductCard({ product }) {
     }, 250);
   };
 
+  const handleMouseOver = (e) => {
+    if (product.image2) {
+      e.currentTarget.src = product.image2;
+    }
+  };
+
+  const handleMouseOut = (e) => {
+    if (product.image) {
+      e.currentTarget.src = product.image;
+    }
+  };
+
   return (
     <div
       className="card"
       onClick={() => navigate(`/product/${product.id}`)}
+      role="article"
     >
       {/* IMAGE WITH HOVER SWAP */}
       <img
         src={product.image}
-        alt={product.name}
-        onMouseOver={(e) => {
-          if (product.image2) e.currentTarget.src = product.image2;
-        }}
-        onMouseOut={(e) => {
-          e.currentTarget.src = product.image;
-        }}
+        alt={product.name || "Watch image"}
+        loading="lazy"
+        decoding="async"
+        onMouseOver={handleMouseOver}
+        onMouseOut={handleMouseOut}
       />
 
       <h3>{product.name}</h3>
       <p>₹{product.price}</p>
 
-      <button onClick={handleAddToCart} disabled={isAdding}>
+      <button
+        onClick={handleAddToCart}
+        disabled={isAdding}
+        aria-label={`Add ${product.name || "item"} to cart`}
+      >
         {isAdding ? "Adding..." : "Add to Cart"}
       </button>
 

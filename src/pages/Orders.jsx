@@ -52,8 +52,13 @@ export default function Orders() {
             {/* ITEMS */}
             <div className="order-items">
               {order.items && order.items.map((item, i) => (
-                <div className="order-item" key={i}>
-                  <img src={item.image} alt={item.name} />
+                <div className="order-item" key={item.id || i}>
+                  <img
+                    src={item.image}
+                    alt={item.name || "Ordered watch"}
+                    loading="lazy"
+                    decoding="async"
+                  />
 
                   <div>
                     <p>{item.name}</p>

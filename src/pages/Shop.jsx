@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import productsData from "../data/products.json";
 import "../styles/shop.css";
 import "../styles/toast.css";
@@ -23,10 +23,20 @@ const Shop = () => {
     setProducts(productsData);
   }, []);
 
-  const categories = ["All", ...new Set(productsData.map((p) => p.category))];
+  const categories = useMemo(
+    () => ["All", ...new Set(productsData.map((p) => p.category))],
+    []
+  );
 
   const togglePanel = (panel) => {
     setOpenPanel(openPanel === panel ? null : panel);
+  };
+
+  const handleAccordionKeyDown = (e, panel) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      togglePanel(panel);
+    }
   };
 
   // ✅ ADD TO CART
@@ -79,17 +89,19 @@ const Shop = () => {
     setTimeout(() => clone.remove(), 600);
   };
 
-  const filteredProducts = products
-    .filter((p) => p.name.toLowerCase().includes(search.toLowerCase()))
-    .filter((p) =>
-      selectedCategory === "All" ? true : p.category === selectedCategory,
-    )
-    .filter((p) => p.price <= maxPrice)
-    .sort((a, b) => {
-      if (sortOption === "low-high") return a.price - b.price;
-      if (sortOption === "high-low") return b.price - a.price;
-      return 0;
-    });
+  const filteredProducts = useMemo(() => {
+    return products
+      .filter((p) => (p.name || "").toLowerCase().includes(search.toLowerCase()))
+      .filter((p) =>
+        selectedCategory === "All" ? true : p.category === selectedCategory,
+      )
+      .filter((p) => p.price <= maxPrice)
+      .sort((a, b) => {
+        if (sortOption === "low-high") return a.price - b.price;
+        if (sortOption === "high-low") return b.price - a.price;
+        return 0;
+      });
+  }, [products, search, selectedCategory, maxPrice, sortOption]);
 
   return (
     <>
@@ -103,6 +115,10 @@ const Shop = () => {
             <div
               className={`accordion-header ${openPanel === "category" ? "open" : ""}`}
               onClick={() => togglePanel("category")}
+              onKeyDown={(e) => handleAccordionKeyDown(e, "category")}
+              role="button"
+              tabIndex={0}
+              aria-expanded={openPanel === "category"}
             >
               Category <span>⌄</span>
             </div>
@@ -128,6 +144,10 @@ const Shop = () => {
             <div
               className={`accordion-header ${openPanel === "price" ? "open" : ""}`}
               onClick={() => togglePanel("price")}
+              onKeyDown={(e) => handleAccordionKeyDown(e, "price")}
+              role="button"
+              tabIndex={0}
+              aria-expanded={openPanel === "price"}
             >
               Price <span>⌄</span>
             </div>
@@ -157,12 +177,15 @@ const Shop = () => {
               type="text"
               placeholder="Search watches..."
               className="shop-search"
+              aria-label="Search watches"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
 
             <select
               className="shop-sort"
+              aria-label="Sort watches"
+              value={sortOption}
               onChange={(e) => setSortOption(e.target.value)}
             >
               <option value="">Sort</option>
@@ -184,7 +207,12 @@ const Shop = () => {
                 return (
                   <div key={product.id} className="product-card">
                     <div className="image-wrapper">
-                      <img src={product.image} alt={product.name} />
+                      <img
+                        src={product.image}
+                        alt={product.name || "Watch image"}
+                        loading="lazy"
+                        decoding="async"
+                      />
                     </div>
 
                     <div className="product-name">{product.name}</div>
@@ -195,6 +223,7 @@ const Shop = () => {
                       <button
                         className="product-btn"
                         disabled={isAdding}
+                        aria-label={`Add ${product.name} to cart`}
                         onClick={(e) => {
                           const img = e.currentTarget
                             .closest(".product-card")
@@ -208,6 +237,7 @@ const Shop = () => {
 
                       <button
                         className="quick-view-btn"
+                        aria-label={`Quick view ${product.name}`}
                         onClick={() => setSelectedProduct(product)}
                       >
                         Quick View
@@ -225,25 +255,36 @@ const Shop = () => {
           <div
             className="modal-overlay"
             onClick={() => setSelectedProduct(null)}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="quick-view-title"
           >
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-              <span
+              <button
+                type="button"
                 className="close-btn"
+                aria-label="Close modal"
                 onClick={() => setSelectedProduct(null)}
               >
                 ×
-              </span>
+              </button>
 
               <div className="modal-body">
-                <img src={selectedProduct.image} alt={selectedProduct.name} />
+                <img
+                  src={selectedProduct.image}
+                  alt={selectedProduct.name || "Watch preview"}
+                  loading="lazy"
+                  decoding="async"
+                />
 
                 <div className="modal-info">
-                  <h2>{selectedProduct.name}</h2>
+                  <h2 id="quick-view-title">{selectedProduct.name}</h2>
                   <p className="modal-price">₹{selectedProduct.price}</p>
 
                   <button
                     className="product-btn"
                     disabled={addingProductId === selectedProduct.id}
+                    aria-label={`Add ${selectedProduct.name} to cart`}
                     onClick={() => addToCart(selectedProduct)}
                   >
                     {addingProductId === selectedProduct.id ? "Adding..." : "Add to Cart"}
