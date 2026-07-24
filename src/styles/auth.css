@@ -1,12 +1,11 @@
-/* ================= AUTH ================= */
+/* ================= AUTH PAGE ================= */
 
 .auth-container {
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  background: radial-gradient(circle at top, #111, #000);
+  background: radial-gradient(circle at top, #16161a, #0b0b0c);
 }
 
 /* BOX */
@@ -14,16 +13,17 @@
   position: relative;
   width: 400px;
   padding: 40px;
-  border-radius: 24px;
+  border-radius: var(--radius-lg);
   overflow: hidden;
 
-  background: rgba(20,20,22,0.6);
-  backdrop-filter: blur(25px);
+  background: rgba(18, 18, 20, 0.75);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
 
-  border: 1px solid #1f1f22;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-strong);
 
-  transition: 0.5s;
+  transition: var(--transition);
 }
 
 /* SLIDING GLOW */
@@ -31,10 +31,10 @@
   position: absolute;
   width: 100%;
   height: 100%;
-  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.1), transparent);
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.06), transparent);
   top: 0;
   left: -100%;
-  transition: 0.6s;
+  transition: 0.6s ease;
 }
 
 .auth-box:hover .auth-slider {
@@ -49,64 +49,74 @@
 }
 
 .auth-content h2 {
-  margin-bottom: 30px;
+  margin-bottom: var(--space-lg);
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
 }
 
 /* TOGGLE */
 .auth-toggle {
   display: flex;
   justify-content: center;
-  gap: 30px;
-  margin-bottom: 25px;
+  gap: 28px;
+  margin-bottom: var(--space-lg);
   cursor: pointer;
 }
 
 .auth-toggle span {
-  color: #777;
+  color: var(--text-muted);
   font-size: 14px;
-  transition: 0.3s;
+  font-weight: 500;
+  padding-bottom: 4px;
+  transition: var(--transition);
 }
 
 .auth-toggle span.active {
-  color: white;
-  border-bottom: 1px solid white;
+  color: var(--text-primary);
+  border-bottom: 2px solid white;
 }
 
 .auth-box p {
-  color: #aaa;
-  margin-bottom: 30px;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-lg);
   font-size: 14px;
 }
 
 /* GRID */
 .auth-grid {
   display: grid;
-  gap: 18px;
+  gap: var(--space-md);
 }
 
-/* FLOATING INPUT */
+/* FLOATING INPUT CONTAINER */
 .input-box {
   position: relative;
 }
 
-.input-box input {
+.input-box input,
+.auth-grid input {
   width: 100%;
-  padding: 14px;
-  border-radius: 12px;
-  border: 1px solid #2a2a2d;
+  height: 46px;
+  padding: 0 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
   background: #0f0f10;
-  color: white;
+  color: var(--text-primary);
+  font-size: 14px;
   outline: none;
+  transition: var(--transition);
 }
 
 .input-box label {
   position: absolute;
-  left: 14px;
+  left: 16px;
   top: 50%;
   transform: translateY(-50%);
-  color: #777;
+  color: var(--text-muted);
+  font-size: 14px;
   pointer-events: none;
-  transition: 0.3s;
+  transition: var(--transition);
 }
 
 /* FLOAT EFFECT */
@@ -114,74 +124,68 @@
 .input-box input:valid + label {
   top: -8px;
   font-size: 12px;
-  color: white;
+  color: var(--text-primary);
+  background: #0f0f10;
+  padding: 0 4px;
 }
 
-/* PASSWORD ICON */
-.input-box.password span {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
+/* INPUT FOCUS STYLING */
+.input-box input:focus,
+.auth-grid input:focus {
+  border-color: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08);
 }
 
-/* PASSWORD FIELD */
-.password-field {
+/* PASSWORD FIELD & TOGGLE ICON */
+.password-field,
+.input-box.password {
   position: relative;
 }
 
-.password-field input {
-  width: 100%;
+.password-field input,
+.input-box.password input {
+  padding-right: 44px;
 }
 
-.password-field span {
+.password-field span,
+.input-box.password span {
   position: absolute;
-  right: 12px;
+  right: 14px;
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
+  color: var(--text-muted);
   font-size: 14px;
+  transition: var(--transition);
 }
 
-/* FORGOT */
+.password-field span:hover,
+.input-box.password span:hover {
+  color: var(--text-primary);
+}
+
+/* FORGOT PASSWORD LINK */
 .forgot {
-  margin-top: 15px;
+  margin-top: 12px;
   font-size: 13px;
-  color: #888;
+  color: var(--text-muted);
   cursor: pointer;
+  transition: var(--transition);
 }
 
 .forgot:hover {
-  color: white;
+  color: var(--text-primary);
 }
 
-/* SWITCH */
+/* SWITCH MODE TEXT */
 .switch {
   margin-top: 20px;
-  color: #aaa;
+  color: var(--text-secondary);
   font-size: 14px;
 }
 
 .switch span {
-  color: white;
+  color: var(--text-primary);
+  font-weight: 500;
   cursor: pointer;
-}
-
-/* INPUT FOCUS */
-.auth-grid input {
-  padding: 14px;
-  border-radius: 12px;
-  border: 1px solid #2a2a2d;
-
-  background: #0f0f10;
-  color: white;
-
-  outline: none;
-  transition: 0.25s;
-}
-
-.auth-grid input:focus {
-  border-color: white;
-  transform: scale(1.02);
 }

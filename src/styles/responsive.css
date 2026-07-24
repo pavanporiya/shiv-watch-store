@@ -23,9 +23,9 @@ img, video, canvas, svg {
   width: 100%;
   margin: 60px auto;
   padding: 36px;
-  background: #111;
-  border-radius: 20px;
-  border: 1px solid #1f1f22;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -34,42 +34,46 @@ img, video, canvas, svg {
 
 .checkout-container h2 {
   margin-bottom: 8px;
+  font-size: 24px;
+  font-weight: 600;
 }
 
 .checkout-container input {
   width: 100%;
-  padding: 14px 16px;
+  height: 46px;
+  padding: 0 16px;
   background: #0f0f10;
-  border: 1px solid #2a2a2d;
-  border-radius: 12px;
-  color: white;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
   outline: none;
   font-size: 14px;
   box-sizing: border-box;
-  transition: 0.25s;
+  transition: var(--transition);
 }
 
 .checkout-container input:focus {
-  border-color: white;
+  border-color: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08);
 }
 
 .checkout-container button {
   width: 100%;
-  padding: 14px;
+  height: var(--btn-height-md);
   margin-top: 10px;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   background: white;
   color: black;
   font-size: 14px;
   font-weight: 500;
   border: none;
   cursor: pointer;
-  transition: 0.25s;
+  transition: var(--transition);
 }
 
 .checkout-container button:hover {
-  opacity: 0.9;
-  transform: scale(1.02);
+  background: #f0f0f2;
+  transform: translateY(-1px);
 }
 
 /* ===== DESKTOP ONLY (> 768px) ===== */

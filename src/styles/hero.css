@@ -1,61 +1,72 @@
-/* ===== HERO ===== */
+/* ===== HERO SECTION ===== */
 
 .hero {
   position: relative;
-  height: 90vh;
-
+  min-height: 85vh;
   display: flex;
   align-items: center;
   justify-content: center;
-
   text-align: center;
-
   background-size: cover;
   background-position: center;
+  padding: var(--space-2xl) var(--space-lg);
 }
 
-/* Overlay */
+/* Dark Gradient Overlay for optimal contrast */
 .hero::before {
   content: "";
   position: absolute;
   inset: 0;
-
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.55);
 }
 
-/* Content */
+/* Content Container */
 .hero > * {
   position: relative;
   z-index: 1;
+  max-width: 800px;
 }
 
-/* Heading */
+/* Hero Title */
 .hero h1 {
-  font-size: 64px;
+  font-size: 60px;
   font-weight: 600;
-  margin-bottom: 12px;
+  line-height: 1.15;
+  letter-spacing: -1px;
+  color: var(--text-primary);
+  margin-bottom: var(--space-md);
 }
 
-/* Subtext */
+/* Hero Subtitle */
 .hero p {
-  color: #aaa;
-  font-size: 16px;
-  margin-bottom: 20px;
+  color: var(--text-secondary);
+  font-size: 18px;
+  line-height: 1.5;
+  margin-bottom: var(--space-lg);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-/* Button */
+/* Hero Button Overrides */
 .hero button {
-  padding: 12px 22px;
-  border-radius: 999px;
+  height: 48px;
+  padding: 0 32px;
+  border-radius: var(--radius-full);
   border: none;
-
   background: white;
   color: black;
-
+  font-size: 15px;
+  font-weight: 500;
   cursor: pointer;
-  transition: 0.2s;
+  transition: var(--transition);
 }
 
 .hero button:hover {
-  transform: scale(1.05);
+  transform: translateY(-2px);
+  background: #f8f8f8;
+}
+
+.hero button:active {
+  transform: scale(0.98);
 }

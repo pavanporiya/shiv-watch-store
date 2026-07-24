@@ -4,24 +4,23 @@
   position: sticky;
   top: 0;
   z-index: 1000;
-
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  padding: 16px 60px;
-
-  background: rgba(10, 10, 10, 0.6);
-  backdrop-filter: blur(15px);
-
-  border-bottom: 1px solid #1f1f22;
+  padding: 14px var(--space-xl);
+  background: rgba(11, 11, 12, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  transition: var(--transition);
 }
 
 /* LOGO */
 .logo {
   font-size: 18px;
   font-weight: 600;
-  color: white;
+  letter-spacing: -0.3px;
+  color: var(--text-primary);
   text-decoration: none;
 }
 
@@ -29,21 +28,21 @@
 .nav-items {
   display: flex;
   align-items: center;
-  gap: 25px;
+  gap: 24px;
 }
 
 /* LINKS */
 .nav-link {
   position: relative;
-  color: #aaa;
+  color: var(--text-secondary);
   text-decoration: none;
   font-size: 14px;
-  transition: 0.3s;
+  font-weight: 500;
+  transition: var(--transition);
 }
 
-/* HOVER COLOR */
 .nav-link:hover {
-  color: white;
+  color: var(--text-primary);
 }
 
 /* UNDERLINE EFFECT */
@@ -51,11 +50,11 @@
   content: "";
   position: absolute;
   left: 0;
-  bottom: -6px;
+  bottom: -4px;
   width: 0%;
-  height: 1px;
+  height: 1.5px;
   background: white;
-  transition: 0.3s;
+  transition: width 0.2s ease;
 }
 
 .nav-link:hover::after {
@@ -65,18 +64,23 @@
 /* LOGOUT BUTTON */
 .logout-btn {
   background: transparent;
-  border: 1px solid #2a2a2d;
-  padding: 6px 14px;
-  border-radius: 999px;
-  color: #aaa;
+  border: 1px solid var(--border);
+  padding: 6px 16px;
+  height: 34px;
+  border-radius: var(--radius-full);
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
   cursor: pointer;
-  transition: 0.3s;
+  transition: var(--transition);
 }
 
 .logout-btn:hover {
-  border-color: white;
-  color: white;
+  border-color: var(--border-hover);
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.05);
 }
+
 /* HAMBURGER BUTTON (HIDDEN ON DESKTOP) */
 .hamburger-btn {
   display: none;
@@ -96,7 +100,7 @@
   height: 2px;
   background-color: #fff;
   border-radius: 2px;
-  transition: all 0.3s ease;
+  transition: var(--transition);
 }
 
 .hamburger-btn.open span:nth-child(1) {
